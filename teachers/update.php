@@ -25,17 +25,16 @@ if (!empty($_FILES['photo']['name'])) {
 }
 
 // 動態產生 SQL 與參數
-$sql = "UPDATE teacher SET name=?, email=?, phone=?, title=?, education=?, category_code=?, research_field=?";
+$sql = "UPDATE teacher SET name=?, email=?, phone=?, title=?, education=?, research_field=?";
 $params = [
     $_POST['name'],
     $_POST['email'],
     $_POST['phone'],
     $_POST['title'],
     $_POST['education'],
-    $_POST['category_code'],
     $_POST['research_field']
 ];
-$types = "sssssss";
+$types = "ssssss";
 
 if ($photo) {
     $sql .= ", photo=?";
@@ -56,5 +55,5 @@ $stmt->bind_param($types, ...$params);
 $stmt->execute();
 
 // 導向個人頁面
-header("Location: ../teachers/detail.php?id=$teacher_id");
+header("Location: ../teachers/manage.php?id=$teacher_id");
 exit;

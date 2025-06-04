@@ -1,24 +1,16 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+include '../common/db.php';
 
-include('../common/db.php');
-
-if (!isset($_GET['id'])) {
-    echo "⚠️ 缺少課程 ID"; exit;
+if (!isset($_GET['course_id'])) {
+    exit('❌ 未指定課程 ID');
 }
 
-$id = $_GET['id'];
+$course_id = $_GET['course_id'];
 
-// 先刪除所有該課程的配對教師資料
-$stmt1 = $conn->prepare("DELETE FROM course_teacher WHERE course_id = ?");
-$stmt1->bind_param("s", $id);
-$stmt1->execute();
+$stmt = $conn->prepare("DELETE FROM course WHERE course_id = ?");
+$stmt->bind_param("i", $course_id);
+$stmt->execute();
 
-// 再刪除課程本體
-$stmt2 = $conn->prepare("DELETE FROM course WHERE course_id = ?");
-$stmt2->bind_param("s", $id);
-$stmt2->execute();
-
-header("Location: ../courses/list.php");
+header("Location: my_courses.php");
 exit;
+?>

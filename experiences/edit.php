@@ -10,7 +10,7 @@ $row = $stmt->get_result()->fetch_assoc();
 ?>
 
 <h2>✏️ 編輯經歷</h2>
-<form action="experiences/update.php" method="post">
+<form action="/~D1285210/experiences/update.php" method="post">
     <input type="hidden" name="experience_id" value="<?= $row['experience_id'] ?>">
     <label>類別:
         <select name="type">

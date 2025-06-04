@@ -1,0 +1,86 @@
+<?php
+include '../common/db.php';
+include '../common/header.php';
+
+if (!isset($_GET['id'])) {
+    echo "<div class='page-content'><p>❌ 缺少預約 ID</p></div>";
+    include '../common/footer.php'; exit;
+}
+
+$id = $_GET['id'];
+
+// 查詢該筆預約資料
+$stmt = $conn->prepare("SELECT * FROM reservation WHERE reservation_id = ?");
+$stmt->bind_param("s", $id);
+$stmt->execute();
+$data = $stmt->get_result()->fetch_assoc();
+
+if (!$data) {
+    echo "<div class='page-content'><p>❌ 查無此預約資料</p></div>";
+    include '../common/footer.php'; exit;
+}
+
+// 計算借用幾小時
+$start = strtotime($data['start_time']);
+$end = strtotime($data['end_time']);
+$duration = ($end - $start) / 3600;
+?>
+
+<div class="page-content">
+    <h2>✏️ 編輯預約</h2>
+    <form action="update.php" method="post">
+        <input type="hidden" name="reservation_id" value="<?= $id ?>">
+
+        <label>地點:
+            <select name="location" required>
+                <option value="">請選擇地點</option>
+
+                <optgroup label="人文大樓 1F / 2F">
+                    <?php foreach (["人104(8人)", "人105(8人)", "人205(8人)", "人206(8人)", "人208(6人)"] as $loc): ?>
+                        <option value="<?= $loc ?>" <?= ($data['location'] === $loc) ? 'selected' : '' ?>><?= $loc ?></option>
+                    <?php endforeach; ?>
+                </optgroup>
+
+                <optgroup label="人文大樓 B1">
+                    <?php foreach (["人B101A(16人)", "人B102A(16人)", "人B103A(12人)", "人B104A(8人)", "人B105A(8人)", "人B113A(8人)", "人B114A(8人)"] as $loc): ?>
+                        <option value="<?= $loc ?>" <?= ($data['location'] === $loc) ? 'selected' : '' ?>><?= $loc ?></option>
+                    <?php endforeach; ?>
+                </optgroup>
+
+                <optgroup label="圖書館視聽小間">
+                    <?php foreach (["圖視聽小間303(5人)", "圖視聽小間304(5人)", "圖視聽小間305(5人)"] as $loc): ?>
+                        <option value="<?= $loc ?>" <?= ($data['location'] === $loc) ? 'selected' : '' ?>><?= $loc ?></option>
+                    <?php endforeach; ?>
+                </optgroup>
+
+                <optgroup label="討論室">
+                    <?php foreach (["討論室320(5人)", "討論室321(5人)"] as $loc): ?>
+                        <option value="<?= $loc ?>" <?= ($data['location'] === $loc) ? 'selected' : '' ?>><?= $loc ?></option>
+                    <?php endforeach; ?>
+                </optgroup>
+            </select>
+        </label><br>
+
+        <label for="date">日期：</label>
+        <input type="date" name="date" value="<?= $data['date'] ?>" required><br>
+
+        <label for="start_time">開始時間：</label>
+        <select name="start_time" required>
+            <?php for ($h = 8; $h <= 18; $h++): 
+                $time = str_pad($h, 2, '0', STR_PAD_LEFT) . ":00"; ?>
+                <option value="<?= $time ?>" <?= ($data['start_time'] === $time) ? 'selected' : '' ?>><?= $time ?></option>
+            <?php endfor; ?>
+        </select><br>
+
+        <label for="duration">借用幾小時：</label>
+        <select name="duration" required>
+            <option value="1" <?= ($duration == 1) ? 'selected' : '' ?>>1 小時</option>
+            <option value="2" <?= ($duration == 2) ? 'selected' : '' ?>>2 小時</option>
+            <option value="3" <?= ($duration == 3) ? 'selected' : '' ?>>3 小時</option>
+        </select><br>
+
+        <input type="submit" value="更新預約">
+    </form>
+</div>
+
+<?php include '../common/footer.php'; ?>

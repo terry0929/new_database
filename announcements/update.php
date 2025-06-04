@@ -1,21 +1,28 @@
 <?php
 include '../common/db.php';
 
-$stmt = $conn->prepare("UPDATE announcement
-                        SET title=?, content=?, category=?, view_count=?, post_date=?, poster_name=?, poster_unit=?, teacher_id=?
-                        WHERE announcement_id=?");
-$stmt->bind_param("sssissssi",
+// 1. 處理 post_date 正確格式
+$post_date_raw = $_POST['post_date'];
+$post_date = str_replace('/', '-', $post_date_raw);
+
+// 2. 準備更新
+$stmt = $conn->prepare("UPDATE announcement SET 
+    title = ?, content = ?, category = ?, post_date = ?, poster_name = ? 
+    WHERE announcement_id = ?");
+
+$stmt->bind_param("sssssi",
     $_POST['title'],
     $_POST['content'],
     $_POST['category'],
-    $_POST['view_count'],
-    $_POST['post_date'],
+    $post_date,
     $_POST['poster_name'],
-    $_POST['poster_unit'],
-    $_POST['teacher_id'],
     $_POST['announcement_id']
 );
 
-$stmt->execute();
-header("Location: ../announcements/list.php");
-exit;
+if ($stmt->execute()) {
+    header("Location: /~D1285210/announcements/manage.php");
+    exit;
+} else {
+    echo "❌ 更新失敗：" . $stmt->error;
+}
+?>

@@ -4,8 +4,8 @@ include('common/db.php');
 include('common/header.php');
 
 if (!isset($_SESSION['user_id'])) {
-    echo "<p>請先登入。</p>";
-    include('common/footer.php'); // ← 修這裡！
+    echo '<div class="page-content"><p>請先登入。</p></div>';
+    include('common/footer.php');
     exit;
 }
 
@@ -17,20 +17,24 @@ $result = $stmt->get_result();
 $teacher = $result->fetch_assoc();
 
 if (!$teacher) {
-    echo "<p>⚠️ 找不到對應的教師資料</p>";
-    include('common/footer.php'); // ← 修這裡！
+    echo '<div class="page-content"><p>⚠️ 找不到對應的教師資料</p></div>';
+    include('common/footer.php');
     exit;
 }
 
 $tid = $teacher['teacher_id'];
 ?>
 
-<h2>🛠 編輯控制台（教師編號：<?= htmlspecialchars($tid) ?>）</h2>
-<ul>
-    <li><a href="/~D1285210/teachers/edit.php">✏️ 編輯個人基本資料</a></li>
-    <li><a href="/~D1285210/experiences/list.php">📚 管理經歷</a></li>
-    <li><a href="/~D1285210/research/list.php">🧪 管理研究成果</a></li>
-    <li><a href="/~D1285210/courses/list.php">📘 管理課程</a></li>
-</ul>
+<div class="page-content">
+    <h2>🛠 編輯控制台（教師編號：<?= htmlspecialchars($tid) ?>）</h2>
+    <ul>
+        <li><a href="/~D1285210/teachers/edit.php">✏️ 編輯個人基本資料</a></li>
+        <li><a href="/~D1285210/experiences/list.php">📚 管理經歷</a></li>
+        <li><a href="/~D1285210/research/list.php">🧪 管理研究成果</a></li>
+        <li><a href="/~D1285210/announcements/manage.php">📢 管理公告</a></li>
+        <li><a href="/~D1285210/courses/my_courses.php">📘 管理課程</a></li>
+        <li><a href="/~D1285210/reservation/my_reservations.php">📅 空間預約</a></li>
+    </ul>
+</div>
 
 <?php include('common/footer.php'); ?>

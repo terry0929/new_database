@@ -1,7 +1,9 @@
 <?php include '../common/header.php'; ?>
+
+<div class="page-content">
 <h2>➕ 新增經歷</h2>
 
-<form action="experiences/save.php" method="post">
+<form action="/~D1285210/experiences/save.php" method="post">
     <label>類別:
         <select name="type">
             <option value="in">校內</option>
@@ -13,5 +15,6 @@
     </label><br>
     <input type="submit" value="儲存">
 </form>
+</div>
 
 <?php include '../common/footer.php'; ?>

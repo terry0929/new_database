@@ -6,5 +6,5 @@ $stmt = $conn->prepare("DELETE FROM announcement WHERE announcement_id = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
 
-header("Location: ../announcements/list.php");
+header("Location: ../announcements/manage.php");
 exit;

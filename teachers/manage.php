@@ -27,7 +27,7 @@ $photoPath = $teacher['photo']
 ?>
 
 <div class="page-content">
-    <p><a href="/~D1285210/teachers/list.php">🔙 回到教師列表</a></p>
+    <p><a href="/~D1285210/edit_mode.php">🔙 回到控制台</a></p>
     <h2>👨‍🏫 教師介紹 - <?= htmlspecialchars($teacher['name']) ?></h2>
 
     <div style="display: flex; gap: 30px; align-items: flex-start;">
@@ -80,11 +80,7 @@ $photoPath = $teacher['photo']
     if ($research_result->num_rows > 0):
         while ($r = $research_result->fetch_assoc()):
     ?>
-        <li>
-            <?= htmlspecialchars($r['title']) ?>
-            （<?= htmlspecialchars($r['type1']) ?> / <?= htmlspecialchars($r['type2']) ?>）
-            （<?= htmlspecialchars($r['publish_date']) ?>）
-        </li>
+        <li><?= htmlspecialchars($r['title']) ?>（<?= htmlspecialchars($r['publish_date']) ?>）</li>
     <?php
         endwhile;
     else:
@@ -92,7 +88,6 @@ $photoPath = $teacher['photo']
     endif;
     ?>
     </ul>
-
     </div>
 
 <?php include '../common/footer.php'; ?>

@@ -11,5 +11,5 @@ $stmt = $conn->prepare("INSERT INTO experience (teacher_id, type, description) V
 $stmt->bind_param("sss", $teacher_id, $_POST['type'], $_POST['description']);
 $stmt->execute();
 
-header("Location: ../experiences/list.php");
+header("Location:/~D1285210/experiences/list.php");
 exit;
