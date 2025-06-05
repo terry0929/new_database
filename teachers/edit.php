@@ -22,6 +22,7 @@ $row = $stmt->get_result()->fetch_assoc();
 
 <div class="page-content">
     <h2>✏️ 編輯個人資料</h2>
+    <h3>歡迎你加入</h3>
     <form action="/~D1285210/teachers/update.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="teacher_id" value="<?= $row['teacher_id'] ?>">
         <label>姓名: <input type="text" name="name" value="<?= $row['name'] ?>"></label><br>
