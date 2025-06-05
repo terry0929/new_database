@@ -14,7 +14,7 @@ $stmt->execute();
 $teacher_id = $stmt->get_result()->fetch_assoc()['teacher_id'];
 
 // 組合上課時間
-$time = "星期" . $_POST['day'] . " " . $_POST['start_time'] . " 到 " . $_POST['end_time'];
+$time = "星期" . $_POST['day'] . " 第" . $_POST['start_time'] . "節 ~ 第" . $_POST['end_time'] . "節";
 
 // 插入課程資料
 $stmt = $conn->prepare("

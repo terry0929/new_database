@@ -2,11 +2,39 @@
 include '../common/db.php';
 include '../common/header.php';
 
-$courses = $conn->query("SELECT * FROM course");
+$keyword = $_GET['q'] ?? '';
+
+if ($keyword !== '') {
+    $stmt = $conn->prepare("
+        SELECT * FROM course
+        WHERE course_id LIKE CONCAT('%', ?, '%')
+        OR name LIKE CONCAT('%', ?, '%')
+        OR teacher_name LIKE CONCAT('%', ?, '%')
+        OR time LIKE CONCAT('%', ?, '%')
+        OR classroom LIKE CONCAT('%', ?, '%')
+        ORDER BY course_id ASC
+    ");
+    $stmt->bind_param("sssss", $keyword, $keyword, $keyword, $keyword, $keyword);
+    $stmt->execute();
+    $courses = $stmt->get_result();
+} else {
+    $courses = $conn->query("SELECT * FROM course ORDER BY course_id ASC");
+}
 ?>
 
 <div class="page-content">
     <h2>📚 課程一覽表</h2>
+
+    <form method="get" action="">
+        🔍 關鍵字搜尋（課程代碼、名稱、教師、時間、教室）：<br>
+        <input type="text" name="q" value="<?= htmlspecialchars($keyword) ?>" >
+        <input type="submit" value="搜尋">
+    </form>
+    <br>
+
+    <?php if ($courses->num_rows === 0): ?>
+        <p>❗ 沒有找到符合「<?= htmlspecialchars($keyword) ?>」的課程。</p>
+    <?php else: ?>
         <table class="styled-table">
             <tr>
                 <th>課堂代碼</th>
@@ -27,6 +55,7 @@ $courses = $conn->query("SELECT * FROM course");
                 </tr>
             <?php endwhile; ?>
         </table>
+    <?php endif; ?>
 </div>
 
 <?php include '../common/footer.php'; ?>

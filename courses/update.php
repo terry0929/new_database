@@ -1,8 +1,8 @@
 <?php
 include '../common/db.php';
 
-// 組合上課時間（例：星期三 09:00 到 12:00）
-$time = "星期" . $_POST['day'] . " " . $_POST['start_time'] . " 到 " . $_POST['end_time'];
+// 組合上課時間（例：星期三第9節 ~ 第12節）
+$time = "星期" . $_POST['day'] . " 第" . $_POST['start_time'] . "節 ~ 第" . $_POST['end_time'] . "節";
 
 $stmt = $conn->prepare("UPDATE course SET
     name=?, location=?, time=?, semester=?, credits=?, classroom=?, teacher_name=?, syllabus=?
