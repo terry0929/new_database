@@ -23,32 +23,37 @@ if ($keyword !== '') {
 <div class="page-content">
     <h2>📅 空間預約一覽</h2>
 
-    <form method="get" action="">
+    <form method="get" action="" class="search-form">
         🔍 關鍵字搜尋（地點、日期、姓名）：<br>
         <input type="text" name="q" value="<?= htmlspecialchars($keyword) ?>" >
         <input type="submit" value="搜尋">
     </form>
-    <br>
 
     <?php if ($result->num_rows === 0): ?>
-        <p>❗ 沒有找到符合「<?= htmlspecialchars($keyword) ?>」的預約紀錄。</p>
+        <div class="empty-message">
+            ❗ 沒有找到符合「<?= htmlspecialchars($keyword) ?>」的預約紀錄。
+        </div>
     <?php else: ?>
-    <table class="styled-table">
-        <tr>
-            <th>地點</th>
-            <th>時間</th>
-            <th>預約人</th>
-            <th>Email</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?= htmlspecialchars($row['location']) ?></td>
-            <td><?= htmlspecialchars($row['date']) ?> <?= $row['start_time'] ?> ~ <?= $row['end_time'] ?></td>
-            <td><?= htmlspecialchars($row['name']) ?></td>
-            <td><?= htmlspecialchars($row['email']) ?></td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>地點</th>
+                    <th>時間</th>
+                    <th>預約人</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($row['location']) ?></td>
+                    <td><?= htmlspecialchars($row['date']) ?> <?= $row['start_time'] ?> ~ <?= $row['end_time'] ?></td>
+                    <td><?= htmlspecialchars($row['name']) ?></td>
+                    <td><?= htmlspecialchars($row['email']) ?></td>
+                </tr>
+            <?php endwhile; ?>
+            </tbody>
+        </table>
     <?php endif; ?>
 </div>
 

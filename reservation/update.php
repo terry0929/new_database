@@ -34,7 +34,10 @@ $check->execute();
 $result = $check->get_result();
 
 if ($result->num_rows > 0) {
-    echo "<div class='page-content'><p>❌ 此地點在這段時間已有預約，請重新選擇。</p></div>";
+    echo "<script>
+        alert('❌ 此地點在這段時間已有預約，請重新選擇。');
+        window.history.back();
+    </script>";
     exit;
 }
 

@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-    <link rel="stylesheet" href="/~D1285210/common/style.css">
+    <link rel="stylesheet" href="/~D1285210/common/style.css?v=<?= time() ?>">
     <meta charset="UTF-8">
     <title>教師系統</title>
     <style>
