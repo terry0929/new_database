@@ -18,6 +18,14 @@ $stmt = $conn->prepare("SELECT * FROM research_result WHERE teacher_id = ?");
 $stmt->bind_param("s", $teacher_id);
 $stmt->execute();
 $result = $stmt->get_result();
+
+$type1_labels = [
+    'journal' => '期刊論文',
+    'conference' => '會議論文',
+    'book' => '專書與技術報告',
+    'nstc' => '國科會計劃',
+    'industry' => '產學合作計劃'
+];
 ?>
 
 
@@ -35,7 +43,7 @@ $result = $stmt->get_result();
         <?php while ($r = $result->fetch_assoc()): ?>
         <tr>
             <td><?= htmlspecialchars($r['title']) ?></td>
-            <td><?= htmlspecialchars($r['type1']) ?> / <?= htmlspecialchars($r['type2']) ?></td>
+            <td><?= $type1_labels[$r['type1']] ?? htmlspecialchars($r['type1'] ?? '') ?> / <?= htmlspecialchars($r['type2']) ?></td>
             <td><?= $r['publish_date'] ?></td>
             <td>
                 <a href="/~D1285210/research/edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
