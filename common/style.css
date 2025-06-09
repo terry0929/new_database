@@ -175,36 +175,6 @@ a:hover {
     background: #357ac9;
 }
 
-.search-form {
-    margin-bottom: 20px;
-}
-.search-form input[type="text"] {
-    padding: 8px 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    width: 240px;
-}
-.search-form input[type="submit"] {
-    padding: 8px 16px;
-    margin-left: 6px;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-}
-.search-form input[type="submit"]:hover {
-    background-color: #357ac9;
-}
-
-.styled-table th, .styled-table td {
-    text-align: center;
-    vertical-align: middle;
-    padding: 14px 20px;
-    font-size: 15px;
-}
-
 .dashboard-wrapper {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -257,4 +227,6 @@ a:hover {
         grid-template-columns: 1fr;
     }
 }
+
+
 

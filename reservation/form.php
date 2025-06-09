@@ -9,8 +9,8 @@ session_start();
 <div class="page-content">
   <h2>📝 預約表單</h2>
   <form method="POST" action="save.php">
-    <label>地點:
-    <select name="location" required>
+    <label><h3>地點:</h3><br>
+    <select name="location" style="width:80%; padding:10px; font-size: 16px;" required><br><br>
         <option value="">請選擇地點</option>
 
         <optgroup label="人文大樓 1F / 2F">
@@ -42,28 +42,30 @@ session_start();
         <option>討論室321(5人)</option>
         </optgroup>
     </select>
-    </label><br>
+    </label><br><br>
 
 
-    <label for="date">日期：</label>
-    <input type="date" name="date" required><br>
+    <label for="date"><h3>日期：</h3></label><br>
+    <input type="date" name="date" style="width:80%; padding:10px; font-size: 16px;" required><br><br>
 
-    <label for="start_time">開始時間：</label>
-    <select name="start_time" required>
+    <label for="start_time"><h3>開始時間：</h3></label><br>
+    <select name="start_time" style="width:80%; padding:10px; font-size: 16px;" required><br><br>
       <?php for ($h = 8; $h <= 18; $h++) {
         $time = str_pad($h, 2, '0', STR_PAD_LEFT) . ":00";
         echo "<option value='$time'>$time</option>";
       } ?>
-    </select><br>
+    </select><br><br>
 
-    <label for="duration">借用幾小時：</label>
-    <select name="duration" required>
+    <label for="duration"><h3>借用幾小時：</h3></label><br>
+    <select name="duration" style="width:80%; padding:10px; font-size: 16px;" required><br><br>
       <option value="1">1 小時</option>
       <option value="2">2 小時</option>
       <option value="3">3 小時</option>
-    </select><br>
+    </select><br><br>
 
-    <input type="submit" value="送出預約">
+    <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <input type="submit" value="儲存" style="padding: 10px 20px; width: 60%; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius:8px; cursor: pointer; transition: background-color 0.3s;">
+        </div>
   </form>
 </div>
 

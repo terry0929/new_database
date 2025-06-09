@@ -24,7 +24,6 @@ if ($result->num_rows === 0) {
 ?>
 
 <div class="page-content">
-    <p><a href="/~D1285210/announcements/list.php">🔙回公告列表</a></p>
     <h2>📢 公告詳情</h2>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr><th>標題</th><td><?= htmlspecialchars($row['title']) ?></td></tr>

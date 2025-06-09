@@ -31,8 +31,8 @@ $duration = ($end - $start) / 3600;
     <form action="update.php" method="post">
         <input type="hidden" name="reservation_id" value="<?= $id ?>">
 
-        <label>地點:
-            <select name="location" required>
+        <label><h3>地點:</h3><br>
+            <select name="location" style="width:80%; padding:10px; font-size: 16px;" required>
                 <option value="">請選擇地點</option>
 
                 <optgroup label="人文大樓 1F / 2F">
@@ -59,27 +59,28 @@ $duration = ($end - $start) / 3600;
                     <?php endforeach; ?>
                 </optgroup>
             </select>
-        </label><br>
+        </label><br><br>
+        <label for="date"><h3>日期：</h3></label><br>
+        <input type="date" name="date" value="<?= $data['date'] ?>"  style="width:80%; padding:10px; font-size: 16px;" required><br><br>
 
-        <label for="date">日期：</label>
-        <input type="date" name="date" value="<?= $data['date'] ?>" required><br>
-
-        <label for="start_time">開始時間：</label>
-        <select name="start_time" required>
+        <label for="start_time"><h3>開始時間：</h3></label><br>
+        <select name="start_time"  style="width:80%; padding:10px; font-size: 16px;" required>
             <?php for ($h = 8; $h <= 18; $h++): 
                 $time = str_pad($h, 2, '0', STR_PAD_LEFT) . ":00"; ?>
                 <option value="<?= $time ?>" <?= ($data['start_time'] === $time) ? 'selected' : '' ?>><?= $time ?></option>
             <?php endfor; ?>
-        </select><br>
+        </select><br><br>
 
-        <label for="duration">借用幾小時：</label>
-        <select name="duration" required>
+        <label for="duration"><h3>借用幾小時：</h3></label><br>
+        <select name="duration"  style="width:80%; padding:10px; font-size: 16px;" required>
             <option value="1" <?= ($duration == 1) ? 'selected' : '' ?>>1 小時</option>
             <option value="2" <?= ($duration == 2) ? 'selected' : '' ?>>2 小時</option>
             <option value="3" <?= ($duration == 3) ? 'selected' : '' ?>>3 小時</option>
-        </select><br>
+        </select><br><br>
 
-        <input type="submit" value="更新預約">
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <input type="submit" value="更新" style="padding: 10px 20px; width: 60%; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius:8px; cursor: pointer; transition: background-color 0.3s;">
+        </div>
     </form>
 </div>
 

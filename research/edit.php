@@ -21,11 +21,13 @@ if (!$data) {
     <h2>✏️ 編輯研究成果</h2>
     <form action="/~D1285210/research/update.php" method="post">
         <input type="hidden" name="result_id" value="<?= $data['result_id'] ?>">
-        <label>標題：<input type="text" name="title" value="<?= htmlspecialchars($data['title']) ?>"></label><br>
-        <label>主要類型：<input type="text" name="type1" value="<?= htmlspecialchars($data['type1']) ?>"></label><br>
-        <label>次要類型：<input type="text" name="type2" value="<?= htmlspecialchars($data['type2']) ?>"></label><br>
-        <label>發表日期：<input type="date" name="publish_date" value="<?= $data['publish_date'] ?>"></label><br>
-        <input type="submit" value="更新">
+        <label><h3>標題：</h3><br><input type="text" name="title" value="<?= htmlspecialchars($data['title']) ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>主要類型：</h3><br><input type="text" name="type1" value="<?= htmlspecialchars($data['type1']) ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>次要類型：</h3><br><input type="text" name="type2" value="<?= htmlspecialchars($data['type2']) ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>發表日期：</h3><br><input type="date" name="publish_date" value="<?= $data['publish_date'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+            <input type="submit" value="更新" style="padding: 10px 20px; width: 60%; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius:8px; cursor: pointer; transition: background-color 0.3s;">
+        </div>
     </form>
 </div>
 

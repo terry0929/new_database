@@ -48,7 +48,7 @@ $stmt = $conn->prepare("SELECT * FROM reservation WHERE location = ? AND date = 
 )");
 $stmt->bind_param("ssssssss", $_POST['location'], $date, $end_time, $start_time, $start_time, $end_time, $start_time, $end_time);
 $stmt->execute();
-$conflict = $stmt->get_result();
+$result = $stmt->get_result();
 if ($result->num_rows > 0) {
     echo "<script>
         alert('❌ 此地點在這段時間已有預約，請重新選擇。');

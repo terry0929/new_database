@@ -21,7 +21,6 @@ if ($result->num_rows === 0) {
 ?>
 
 <div class="page-content">
-    <p><a href="/~D1285210/courses/list.php">🔙回課程列表</a></p>
     <h2>📘 課程詳細資料</h2>
     <table border="1" cellpadding="8" cellspacing="0">
         <tr><th>課堂代碼</th><td><?= htmlspecialchars($c['course_id']) ?></td></tr>
@@ -30,7 +29,6 @@ if ($result->num_rows === 0) {
         <tr><th>課堂時間</th><td><?= htmlspecialchars($c['time']) ?></td></tr>
         <tr><th>學期</th><td><?= htmlspecialchars($c['semester']) ?></td></tr>
         <tr><th>學分</th><td><?= htmlspecialchars($c['credits']) ?></td></tr>
-        <tr><th>課堂教室</th><td><?= htmlspecialchars($c['classroom']) ?></td></tr>
         <tr><th>授課教師</th><td><?= htmlspecialchars($c['teacher_name']) ?></td></tr>
         <tr><th>大綱</th><td><?= nl2br(htmlspecialchars($c['syllabus'])) ?></td></tr>
     </table>

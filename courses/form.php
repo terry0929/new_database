@@ -38,60 +38,58 @@ $course = [
 <div class="page-content">
     <h2>➕ 新增課程</h2>
     <form action="/~D1285210/courses/save.php" method="post">
-        <label>課程名稱: 
-            <input type="text" name="name" value="<?= htmlspecialchars($course['name']) ?>" required>
-        </label><br>
+        <label><h3>課程名稱:</h3><br>
+            <input type="text" name="name" value="<?= htmlspecialchars($course['name']) ?>" style="width:80%; padding:10px; font-size: 16px;" required>
+        </label><br><br>
 
-        <label>課堂地點: 
-            <input type="text" name="location" value="<?= htmlspecialchars($course['location']) ?>">
-        </label><br>
+        <label><h3>課堂地點:</h3><br>
+            <input type="text" name="location" value="<?= htmlspecialchars($course['location']) ?>" style="width:80%; padding:10px; font-size: 16px;" required>
+        </label><br><br>
 
-        <label>上課時間: 
-            <select name="day" required>
+        <label><h3>上課時間:</h3><br>
+            <select name="day" style="width:80%; padding:10px; font-size: 16px;" required>
                 <?php
-                $days = ['一', '二', '三', '四', '五', '六', '日'];
+                $days = ['一', '二', '三', '四', '五'];
                 foreach ($days as $d) {
                     $selected = ($course['day'] === $d) ? 'selected' : '';
                     echo "<option value='$d' $selected>星期$d</option>";
                 }
                 ?>
-            </select>
+            </select><br><br>
             第
-            <select name="start_time" required>
+            <select name="start_time" style="width:35.2%; padding:10px; font-size: 16px;" required>
                 <?php for ($i = 1; $i <= 14; $i++): ?>
                     <option value="<?= $i ?>" <?= ($course['start_time'] == $i ? 'selected' : '') ?>><?= $i ?></option>
                 <?php endfor; ?>
             </select>
-            節 到
-            <select name="end_time" required>
+            節 到 第
+            <select name="end_time" style="width:35.2%; padding:10px; font-size: 16px;" required>
                 <?php for ($i = 1; $i <= 14; $i++): ?>
                     <option value="<?= $i ?>" <?= ($course['end_time'] == $i ? 'selected' : '') ?>><?= $i ?></option>
                 <?php endfor; ?>
             </select>
             節
-        </label><br>
+        </label><br><br>
 
-        <label>學期: 
-            <input type="text" name="semester" value="<?= htmlspecialchars($course['semester']) ?>">
-        </label><br>
+        <label><h3>學期:</h3><br>
+            <input type="text" name="semester" value="<?= htmlspecialchars($course['semester']) ?>" style="width:80%; padding:10px; font-size: 16px;" required>
+        </label><br><br>
 
-        <label>學分數: 
-            <input type="number" name="credits" value="<?= $course['credits'] ?>">
-        </label><br>
+        <label><h3>學分數:</h3><br>
+            <input type="number" name="credits" value="<?= $course['credits'] ?>" style="width:80%; padding:10px; font-size: 16px;" required>
+        </label><br><br>
 
-        <label>課堂教室: 
-            <input type="text" name="classroom" value="<?= htmlspecialchars($course['classroom']) ?>">
-        </label><br>
+        <label><h3>授課教師:</h3><br>
+            <input type="text" name="teacher_name" value="<?= htmlspecialchars($course['teacher_name']) ?>" style="width:80%; padding:10px; font-size: 16px;" required>
+        </label><br><br>
 
-        <label>授課教師: 
-            <input type="text" name="teacher_name" value="<?= htmlspecialchars($course['teacher_name']) ?>">
-        </label><br>
+        <label><h3>課程大綱:</h3><br>
+            <textarea name="syllabus" style="width:80%; padding:10px; font-size: 16px;"><?= htmlspecialchars($course['syllabus']) ?></textarea>
+        </label><br><br>
 
-        <label>課程大綱: 
-            <textarea name="syllabus"><?= htmlspecialchars($course['syllabus']) ?></textarea>
-        </label><br>
-
-        <input type="submit" value="新增課程">
+        <div style="display: flex; justify-content: center; margin-top: 20px;">
+        <input type="submit" value="儲存" style="padding: 10px 20px; width: 60%; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius:8px; cursor: pointer; transition: background-color 0.3s;">
+    </div>
     </form>
 </div>
 
