@@ -5,12 +5,13 @@ include '../common/db.php';
 
 $stmt = $conn->prepare("
     UPDATE research_result SET
-    title=?, type1=?, type2=?, publish_date=?
+    title=?, author=?, type1=?, type2=?, publish_date=?
     WHERE result_id=?
 ");
 
-$stmt->bind_param("ssssi",
+$stmt->bind_param("sssssi",
     $_POST['title'],
+    $_POST['author'],
     $_POST['type1'],
     $_POST['type2'],
     $_POST['publish_date'],
