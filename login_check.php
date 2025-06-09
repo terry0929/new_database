@@ -12,7 +12,7 @@ $result = $stmt->get_result();
 
 if ($user = $result->fetch_assoc()) {
     $_SESSION['user_id'] = $user['user_id'];
-    echo "<script>alert('登入成功'); location.href='edit_mode.php';</script>";
+    echo "<script>alert('登入成功'); location.href='index.php';</script>";
 } else {
     echo "<script>alert('帳號或密碼錯誤'); history.back();</script>";
 }

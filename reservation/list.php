@@ -1,60 +1,78 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 include '../common/db.php';
 include '../common/header.php';
 
-$keyword = $_GET['q'] ?? '';
+// 預設日期是今天
+$date = $_GET['date'] ?? date('Y-m-d');
 
-if ($keyword !== '') {
-    $stmt = $conn->prepare("
-        SELECT * FROM reservation 
-        WHERE location LIKE CONCAT('%', ?, '%')
-           OR date LIKE CONCAT('%', ?, '%')
-           OR name LIKE CONCAT('%', ?, '%')
-        ORDER BY date ASC, start_time ASC
-    ");
-    $stmt->bind_param("sss", $keyword, $keyword, $keyword);
-    $stmt->execute();
-    $result = $stmt->get_result();
-} else {
-    $result = $conn->query("SELECT * FROM reservation ORDER BY date ASC, start_time ASC");
+// 所有時間格子（8:00~20:00）
+$hours = range(8, 20);
+
+// 空間清單（可以從資料庫撈，這裡寫死）
+$rooms = [
+  '人104(8人)', '人105(8人)', '人205(8人)', '人206(8人)', '人208(6人)',
+  '人B101A(16人)', '人B102A(16人)', '人B103A(12人)', '人B104A(8人)',
+  '人B105A(8人)', '人B113A(8人)', '人B114A(8人)' ,
+  '圖視聽小間303(5人)', '圖視聽小間304(5人)', '圖視聽小間305(5人)',
+    '討論室320(5人)', '討論室321(5人)'
+];
+
+$stmt = $conn->prepare("SELECT location, start_time, end_time FROM reservation WHERE date = ?");
+$stmt->bind_param("s", $date);
+$stmt->execute();
+$reserved = $stmt->get_result();
+
+$reserved_map = [];
+while ($row = $reserved->fetch_assoc()) {
+    if (isset($row['start_time']) && isset($row['end_time'])) {
+        $location = $row['location'];
+        $start = (int)date('G', strtotime($row['start_time']));
+        $end = (int)date('G', strtotime($row['end_time']));
+
+        for ($h = $start; $h < $end; $h++) {
+            $reserved_map[$location][$h] = true;
+        }
+    }
 }
+
+
 ?>
 
 <div class="page-content">
-    <h2>📅 空間預約一覽</h2>
+  <h2>📅 選擇日期查看可預約時段</h2>
+  <form method="GET" style="margin-bottom: 20px;">
+    <label for="date">借用日期：</label>
+    <input type="date" name="date" value="<?= htmlspecialchars($date) ?>" required>
+    <button type="submit">查詢</button>
+  </form>
 
-    <form method="get" action="" class="search-form">
-        🔍 關鍵字搜尋（地點、日期、姓名）：<br>
-        <input type="text" name="q" value="<?= htmlspecialchars($keyword) ?>" >
-        <input type="submit" value="搜尋">
-    </form>
+  <p>✅：可借用　｜　❌：已借出或不開放</p>
 
-    <?php if ($result->num_rows === 0): ?>
-        <div class="empty-message">
-            ❗ 沒有找到符合「<?= htmlspecialchars($keyword) ?>」的預約紀錄。
-        </div>
-    <?php else: ?>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>地點</th>
-                    <th>時間</th>
-                    <th>預約人</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['location']) ?></td>
-                    <td><?= htmlspecialchars($row['date']) ?> <?= $row['start_time'] ?> ~ <?= $row['end_time'] ?></td>
-                    <td><?= htmlspecialchars($row['name']) ?></td>
-                    <td><?= htmlspecialchars($row['email']) ?></td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
-    <?php endif; ?>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr style="background:#ddd;">
+      <th>開始時間</th>
+      <?php foreach ($hours as $h): ?>
+        <th><?= $h ?>:00</th>
+      <?php endforeach; ?>
+    </tr>
+
+    <?php foreach ($rooms as $room): ?>
+      <tr>
+        <th style="background:#3A80C1; color:white;"><?= $room ?></th>
+        <?php foreach ($hours as $h): ?>
+          <td style="text-align: center;">
+            <?php if (!isset($reserved_map[$room][$h])): ?>
+                <span title="可借用" style="color: green;">✅</span>
+            <?php else: ?>
+                <span title="已借出" style="color: red;">❌</span>
+            <?php endif; ?>
+        </td>
+        <?php endforeach; ?>
+      </tr>
+    <?php endforeach; ?>
+  </table>
 </div>
 
 <?php include '../common/footer.php'; ?>

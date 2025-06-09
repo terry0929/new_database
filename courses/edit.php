@@ -52,7 +52,7 @@ if (isset($_SESSION['user_id'])) {
         <label><h3>上課時間:</h3><br>
             <select name="day" style="width:80%; padding:10px; font-size: 16px;" required>
                 <?php
-                $days = ['一', '二', '三', '四', '五'];
+                $days = ['一', '二', '三', '四', '五' , '六', '日'];
                 foreach ($days as $d) {
                     $selected = ($course['day'] === $d) ? 'selected' : '';
                     echo "<option value='$d' $selected>星期$d</option>";
