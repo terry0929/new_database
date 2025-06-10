@@ -6,17 +6,17 @@ include '../common/header.php';
 session_start(); // 如果 header.php 裡沒有 session_start()，這邊加上
 
 if (
-    isset($_POST['title'], $_POST['author'], $_POST['project_number'], $_POST['funding_agency'], $_POST['amount'], $_POST['starts_date'], $_POST['end_date'], $_POST['upload_date'], $_POST['summary'], $_POST['remarks'])
+    isset($_POST['title'], $_POST['author'], $_POST['summary'], $_POST['project_number'], $_POST['funding_agency'], $_POST['amount'], $_POST['starts_date'], $_POST['end_date'], $_POST['upload_date'], $_POST['remarks'])
 ) {
     $title = $_POST['title'];
     $author = $_POST['author'];
+    $summary = $_POST['summary'];
     $project_number = $_POST['project_number'];
     $funding_agency = $_POST['funding_agency'];
     $amount = $_POST['amount'];
     $starts_date = $_POST['starts_date'];
     $end_date = $_POST['end_date'];
     $upload_date = $_POST['upload_date'];
-    $summary = $_POST['summary'];
     $remarks = $_POST['remarks'];
     $category = 'np';
 
@@ -31,9 +31,9 @@ if (
 
     // ✅ 插入研究成果
     $stmt = $conn->prepare("INSERT INTO nstc_projects
-        (teacher_id, category, title, author, project_number, funding_agency, amount, starts_date, end_date, upload_date, summary, remarks)
+        (teacher_id, category, title, author, summary, project_number, funding_agency, amount, starts_date, end_date, upload_date, remarks)
         VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssisssss", $teacher_id, $category, $title, $author, $project_number, $funding_agency, $amount, $starts_date, $end_date, $upload_date, $summary, $remarks);
+    $stmt->bind_param("sssssssissss", $teacher_id, $category, $title, $author, $summary, $project_number, $funding_agency, $amount, $starts_date, $end_date, $upload_date, $remarks);
     $stmt->execute();
 
     $new_result_id = $conn->insert_id;

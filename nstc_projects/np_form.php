@@ -21,6 +21,7 @@ if (isset($_SESSION['user_id'])) {
     <form action="/~D1285210/nstc_projects/save.php" method="post">
         <label><h3>計劃名稱</h3><br><input type="text" name="title" placeholder="例：產學合作計劃" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>負責人</h3><br><input type="text" name="author" placeholder="例：葉韋坪" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>作品簡述</h3><br><input type="text" name="summary" placeholder="例：這是一篇關於..." style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>專案編號</h3><br><input type="text" name="project_number" placeholder="請輸入專案編號" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>資助單位</h3><br><input type="text" name="funding_agency" placeholder="請輸入資助單位" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>資助金額</h3><br><input type="text" name="amount" placeholder="請輸入資助金額" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>

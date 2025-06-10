@@ -6,10 +6,11 @@ include '../common/header.php';
 session_start(); // 如果 header.php 裡沒有 session_start()，這邊加上
 
 if (
-    isset($_POST['title'], $_POST['author'], $_POST['volume'], $_POST['issue'], $_POST['pages'], $_POST['doi'], $_POST['upload_date'], $_POST['APA'], $_POST['remarks'])
+    isset($_POST['title'], $_POST['author'], $_POST['summary'], $_POST['volume'], $_POST['issue'], $_POST['pages'], $_POST['doi'], $_POST['upload_date'], $_POST['APA'], $_POST['remarks'])
 ) {
     $title = $_POST['title'];
     $author = $_POST['author'];
+    $summary = $_POST['summary'];
     $volume = $_POST['volume'];
     $issue = $_POST['issue'];
     $pages = $_POST['pages'];
@@ -30,9 +31,9 @@ if (
 
     // ✅ 插入研究成果
     $stmt = $conn->prepare("INSERT INTO journal_articles
-        (teacher_id, category, title, author, volume, issue, pages, doi, upload_date, APA, remarks)
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssssss", $teacher_id, $category, $title, $author, $volume, $issue, $pages, $doi, $upload_date, $APA, $remarks);
+        (teacher_id, category, title, author, summary, volume, issue, pages, doi, upload_date, APA, remarks)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssssss", $teacher_id, $category, $title, $author, $summary, $volume, $issue, $pages, $doi, $upload_date, $APA, $remarks);
     $stmt->execute();
 
     $new_result_id = $conn->insert_id;

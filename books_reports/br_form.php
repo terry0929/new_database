@@ -21,6 +21,7 @@ if (isset($_SESSION['user_id'])) {
     <form action="/~D1285210/books_reports/save.php" method="post">
         <label><h3>文獻名稱</h3><br><input type="text" name="title" placeholder="例：traralalo tralala" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>作者(可填寫多位)</h3><br><input type="text" name="author" placeholder="例：葉韋坪" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>作品簡述</h3><br><input type="text" name="summary" placeholder="例：這是一篇關於..." style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>出版商</h3><br><input type="text" name="publisher" placeholder="請輸入出版商" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>ISBN</h3><br><input type="text" name="isbn" placeholder="請輸入ISBN" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>章節資訊</h3><br><input type="text" name="chapter_info" placeholder="請輸入章節資訊" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>

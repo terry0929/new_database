@@ -6,10 +6,11 @@ include '../common/header.php';
 session_start(); // 如果 header.php 裡沒有 session_start()，這邊加上
 
 if (
-    isset($_POST['title'], $_POST['author'], $_POST['publisher'], $_POST['isbn'], $_POST['chapter_info'], $_POST['book_type'], $_POST['upload_date'], $_POST['remarks'])
+    isset($_POST['title'], $_POST['author'], $_POST['summary'], $_POST['publisher'], $_POST['isbn'], $_POST['chapter_info'], $_POST['book_type'], $_POST['upload_date'], $_POST['remarks'])
 ) {
     $title = $_POST['title'];
     $author = $_POST['author'];
+    $summary = $_POST['summary'];
     $publisher = $_POST['publisher'];
     $isbn = $_POST['isbn'];
     $chapter_info = $_POST['chapter_info'];
@@ -29,9 +30,9 @@ if (
 
     // ✅ 插入研究成果
     $stmt = $conn->prepare("INSERT INTO books_reports
-        (teacher_id, category, title, author, publisher, isbn, chapter_info, book_type, upload_date, remarks)
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssss", $teacher_id, $category, $title, $author, $publisher, $isbn, $chapter_info, $book_type, $upload_date, $remarks);
+        (teacher_id, category, title, author, summary, publisher, isbn, chapter_info, book_type, upload_date, remarks)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssssss", $teacher_id, $category, $title, $author, $summary, $publisher, $isbn, $chapter_info, $book_type, $upload_date, $remarks);
     $stmt->execute();
 
     $new_result_id = $conn->insert_id;

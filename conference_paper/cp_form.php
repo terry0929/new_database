@@ -21,6 +21,7 @@ if (isset($_SESSION['user_id'])) {
     <form action="/~D1285210/conference_paper/save.php" method="post">
         <label><h3>論文名稱</h3><br><input type="text" name="title" placeholder="例：traralalo tralala" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>作者(可填寫多位)</h3><br><input type="text" name="author" placeholder="例：葉韋坪" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>作品簡述</h3><br><input type="text" name="summary" placeholder="例：這是一篇關於..." style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>會議名稱</h3><br><input type="text" name="conference_name" placeholder="請輸入會議名稱" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>與會地點</h3><br><input type="text" name="locations" placeholder="請輸入與會地點" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>會議日期</h3><br><input type="date" name="conference_date" placeholder="請輸入會議日期" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
