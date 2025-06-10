@@ -18,21 +18,15 @@ $stmt = $conn->prepare("SELECT * FROM research_result WHERE teacher_id = ?");
 $stmt->bind_param("s", $teacher_id);
 $stmt->execute();
 $result = $stmt->get_result();
-
-$type1_labels = [
-    'journal' => '期刊論文',
-    'conference' => '會議論文',
-    'book' => '專書與技術報告',
-    'nstc' => '國科會計劃',
-    'industry' => '產學合作計劃'
-];
 ?>
 
 
 <div class="page-content">
     <h2>🧪 我的研究成果</h2>
-    <p><a href="/~D1285210/research/form.php">➕ 新增成果</a></p>
+    <!-- <p><a href="/~D1285210/research/form.php">➕ 新增成果</a></p> -->
+    <p><a href="/~D1285210/research/choose_type.php">➕ 新增成果</a></p>
 
+    <h3>期刊論文</h3>
     <table class="styled-table">
         <tr>
             <th>標題</th>

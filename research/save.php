@@ -6,11 +6,9 @@ include '../common/header.php';
 session_start(); // 如果 header.php 裡沒有 session_start()，這邊加上
 
 if (
-    isset($_POST['title'], $_POST['author'],$_POST['type1'], $_POST['type2'], $_POST['publish_date'],
-          )
+    isset($_POST['title'], $_POST['type1'], $_POST['type2'], $_POST['publish_date'])
 ) {
     $title = $_POST['title'];
-    $author = $_POST['author'];
     $type1 = $_POST['type1'];
     $type2 = $_POST['type2'];
     $publish_date = $_POST['publish_date'];
@@ -26,9 +24,9 @@ if (
 
     // ✅ 插入研究成果
     $stmt = $conn->prepare("INSERT INTO research_result
-        (title, author, type1, type2, publish_date, teacher_id)
-        VALUES ( ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $title, $author, $type1, $type2, $publish_date, $teacher_id);
+        (title, type1, type2, publish_date, teacher_id)
+        VALUES ( ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $title, $type1, $type2, $publish_date, $teacher_id);
     $stmt->execute();
 
     $new_result_id = $conn->insert_id;
