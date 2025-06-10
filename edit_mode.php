@@ -3,19 +3,19 @@ session_start();
 include('common/db.php');
 include('common/header.php');
 
-if (!isset($_SESSION['user_id'])) {
-    echo '<div class="page-content"><p>請先登入。</p></div>';
+
+$stmt = $conn->prepare("SELECT teacher_id FROM user_account WHERE teacher_id = ?");
+$stmt->bind_param("s", $_SESSION['teacher_id']);
+$stmt->execute();
+$teacher = $stmt->get_result()->fetch_assoc();
+$tid = $teacher['teacher_id'] ?? '未知';
+
+if (!isset($_SESSION['teacher_id']) || !preg_match('/^T\d+$/', $_SESSION['teacher_id'])) {
+    echo '<div class="page-content"><p>⚠️ 您沒有權限進入此頁面（僅限教師）</p></div>';
     include('common/footer.php');
     exit;
 }
 
-// 找出教師ID
-$stmt = $conn->prepare("SELECT teacher_id FROM user_account WHERE user_id = ?");
-$stmt->bind_param("s", $_SESSION['user_id']);
-$stmt->execute();
-$result = $stmt->get_result();
-$teacher = $result->fetch_assoc();
-$tid = $teacher['teacher_id'] ?? '未知';
 ?>
 
 <div class="page-content">
@@ -51,6 +51,7 @@ $tid = $teacher['teacher_id'] ?? '未知';
                 <li><a href="/~D1285210/reservation/my_reservations.php">📅 空間預約</a></li>
             </ul>
         </div>
+
     </div>
 </div>
 

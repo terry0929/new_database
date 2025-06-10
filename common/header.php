@@ -54,6 +54,7 @@ if (session_status() === PHP_SESSION_NONE) {
         <a href="/~D1285210/announcements/list.php">📢 公告</a>
         <a href="/~D1285210/courses/timetable_select.php">📘 課程</a>
         <a href="/~D1285210/reservation/list.php">📅 空間預約</a>
+        <a href="/~D1285210/messages/index.php">💬 聊天室</a>
         <a href="/~D1285210/edit_mode.php">🛠 控制台</a>
         <?php if (isset($_SESSION['user_id'])): ?>
             <a href="/~D1285210/logout.php">🚪 登出</a>
