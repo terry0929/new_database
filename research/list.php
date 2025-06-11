@@ -15,32 +15,37 @@ $teacher_id = $teacher_row['teacher_id'];
 
 // 查詢該教師自己的研究成果
 $sql1 = "SELECT r.result_id, j.title, j.author, j.summary, j.upload_date
-        FROM researchs_result r
+        FROM researchs_result r, Teacher_research tr
         JOIN journal_articles j ON r.result_id = j.result_id
+        WHERE tr.teachers_id = $teacher_id
         ORDER BY r.created_at DESC";
 $result1 = $conn->query($sql1);
 
 $sql2 = "SELECT r.result_id, c.title, c.author, c.summary, c.upload_date
-        FROM researchs_result r
+        FROM researchs_result r, Teacher_research tr
         JOIN conference_papers c ON r.result_id = c.result_id
+        WHERE tr.teachers_id = $teacher_id
         ORDER BY r.created_at DESC";
 $result2 = $conn->query($sql2);
 
 $sql3 = "SELECT r.result_id, b.title, b.author, b.summary, b.upload_date
-        FROM researchs_result r
+        FROM researchs_result r, Teacher_research tr
         JOIN books_reports b ON r.result_id = b.result_id
+        WHERE tr.teachers_id = $teacher_id
         ORDER BY r.created_at DESC";
 $result3 = $conn->query($sql3);
 
 $sql4 = "SELECT r.result_id, n.title, n.author, n.summary, n.upload_date
-        FROM researchs_result r
+        FROM researchs_result r, Teacher_research tr
         JOIN nstc_projects n ON r.result_id = n.result_id
+        WHERE tr.teachers_id = $teacher_id
         ORDER BY r.created_at DESC";
 $result4 = $conn->query($sql4);
 
 $sql5 = "SELECT r.result_id, i.title, i.author, i.outcome, i.upload_date
-        FROM researchs_result r
+        FROM researchs_result r, Teacher_research tr
         JOIN industry_projects i ON r.result_id = i.result_id
+        WHERE tr.teachers_id = $teacher_id
         ORDER BY r.created_at DESC";
 $result5 = $conn->query($sql5);
 ?>
