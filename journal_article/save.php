@@ -18,6 +18,8 @@ if (
     $upload_date = $_POST['upload_date'];
     $APA = $_POST['APA'];
     $remarks = $_POST['remarks'];
+    $type = 'ja';
+    $result_id = uniqid('R');
 
 
     // ✅ 抓目前登入使用者的 teacher_id
@@ -27,18 +29,20 @@ if (
     $result = $stmt->get_result();
     $teacher_row = $result->fetch_assoc();
     $teacher_id = $teacher_row['teacher_id'];
-    $category = 'ja';
+
+    $stmt = $conn->prepare("INSERT INTO researchs_result (result_id, type) VALUES (?, ?)");
+    $stmt->bind_param("ss", $result_id, $type);
+    $stmt->execute();
 
     // ✅ 插入研究成果
     $stmt = $conn->prepare("INSERT INTO journal_articles
-        (teacher_id, category, title, author, summary, volume, issue, pages, doi, upload_date, APA, remarks)
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssssss", $teacher_id, $category, $title, $author, $summary, $volume, $issue, $pages, $doi, $upload_date, $APA, $remarks);
+        (result_id, title, author, summary, volume, issue, pages, doi, upload_date, APA, remarks)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssssssss", $result_id, $title, $author, $summary, $volume, $issue, $pages, $doi, $upload_date, $APA, $remarks);
     $stmt->execute();
 
-    $new_result_id = $conn->insert_id;
-    $link = $conn->prepare("INSERT INTO teacher_research (teacher_id, result_id, category) VALUES (?, ?, ?)");
-    $link->bind_param("sis", $teacher_id, $new_result_id, $category);
+    $link = $conn->prepare("INSERT INTO Teacher_research (teachers_id, results_id) VALUES (?, ?)");
+    $link->bind_param("ss", $teacher_id, $result_id);
     $link->execute();
 
     header("Location: /~D1285210/research/list.php");

@@ -17,7 +17,8 @@ if (
     $book_type = $_POST['book_type'];
     $upload_date = $_POST['upload_date'];
     $remarks = $_POST['remarks'];
-    $category = 'br';
+    $type = 'br';
+    $result_id = uniqid('R');
 
 
     // ✅ 抓目前登入使用者的 teacher_id
@@ -28,16 +29,19 @@ if (
     $teacher_row = $result->fetch_assoc();
     $teacher_id = $teacher_row['teacher_id'];
 
-    // ✅ 插入研究成果
-    $stmt = $conn->prepare("INSERT INTO books_reports
-        (teacher_id, category, title, author, summary, publisher, isbn, chapter_info, book_type, upload_date, remarks)
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssssss", $teacher_id, $category, $title, $author, $summary, $publisher, $isbn, $chapter_info, $book_type, $upload_date, $remarks);
+    $stmt = $conn->prepare("INSERT INTO researchs_result (result_id, type) VALUES (?, ?)");
+    $stmt->bind_param("ss", $result_id, $type);
     $stmt->execute();
 
-    $new_result_id = $conn->insert_id;
-    $link = $conn->prepare("INSERT INTO teacher_research (teacher_id, result_id, category) VALUES (?, ?, ?)");
-    $link->bind_param("sis", $teacher_id, $new_result_id, $category);
+    // ✅ 插入研究成果
+    $stmt = $conn->prepare("INSERT INTO books_reports
+        (result_id, title, author, summary, publisher, isbn, chapter_info, book_type, upload_date, remarks)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssssss", $result_id, $title, $author, $summary, $publisher, $isbn, $chapter_info, $book_type, $upload_date, $remarks);
+    $stmt->execute();
+
+    $link = $conn->prepare("INSERT INTO Teacher_research (teachers_id, results_id) VALUES (?, ?)");
+    $link->bind_param("ss", $teacher_id, $result_id);
     $link->execute();
 
     header("Location: /~D1285210/research/list.php");

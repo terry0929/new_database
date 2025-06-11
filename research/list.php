@@ -14,30 +14,35 @@ $teacher_row = $result_tid->fetch_assoc();
 $teacher_id = $teacher_row['teacher_id'];
 
 // 查詢該教師自己的研究成果
-$stmt1 = $conn->prepare("SELECT * FROM journal_articles WHERE teacher_id = ?");
-$stmt1->bind_param("s", $teacher_id);
-$stmt1->execute();
-$result1 = $stmt1->get_result();
+$sql1 = "SELECT r.result_id, j.title, j.author, j.summary, j.upload_date
+        FROM researchs_result r
+        JOIN journal_articles j ON r.result_id = j.result_id
+        ORDER BY r.created_at DESC";
+$result1 = $conn->query($sql1);
 
-$stmt2 = $conn->prepare("SELECT * FROM conference_papers WHERE teacher_id = ?");
-$stmt2->bind_param("s", $teacher_id);
-$stmt2->execute();
-$result2 = $stmt2->get_result();
+$sql2 = "SELECT r.result_id, c.title, c.author, c.summary, c.upload_date
+        FROM researchs_result r
+        JOIN conference_papers c ON r.result_id = c.result_id
+        ORDER BY r.created_at DESC";
+$result2 = $conn->query($sql2);
 
-$stmt3 = $conn->prepare("SELECT * FROM books_reports WHERE teacher_id = ?");
-$stmt3->bind_param("s", $teacher_id);
-$stmt3->execute();
-$result3 = $stmt3->get_result();
+$sql3 = "SELECT r.result_id, b.title, b.author, b.summary, b.upload_date
+        FROM researchs_result r
+        JOIN books_reports b ON r.result_id = b.result_id
+        ORDER BY r.created_at DESC";
+$result3 = $conn->query($sql3);
 
-$stmt4 = $conn->prepare("SELECT * FROM nstc_projects WHERE teacher_id = ?");
-$stmt4->bind_param("s", $teacher_id);
-$stmt4->execute();
-$result4 = $stmt4->get_result();
+$sql4 = "SELECT r.result_id, n.title, n.author, n.summary, n.upload_date
+        FROM researchs_result r
+        JOIN nstc_projects n ON r.result_id = n.result_id
+        ORDER BY r.created_at DESC";
+$result4 = $conn->query($sql4);
 
-$stmt5 = $conn->prepare("SELECT * FROM industry_projects WHERE teacher_id = ?");
-$stmt5->bind_param("s", $teacher_id);
-$stmt5->execute();
-$result5 = $stmt5->get_result();
+$sql5 = "SELECT r.result_id, i.title, i.author, i.outcome, i.upload_date
+        FROM researchs_result r
+        JOIN industry_projects i ON r.result_id = i.result_id
+        ORDER BY r.created_at DESC";
+$result5 = $conn->query($sql5);
 ?>
 
 
@@ -159,3 +164,14 @@ $result5 = $stmt5->get_result();
 </div>
 
 <?php include '../common/footer.php'; ?>
+
+
+<!-- ALTER TABLE conference_papers
+ADD COLUMN result_id VARCHAR(50); -->
+<!-- 
+ALTER TABLE conference_papers
+ADD CONSTRAINT fk_cp_r
+FOREIGN KEY (result_id) REFERENCES researchs_result(result_id) ON DELETE CASCADE; -->
+
+<!-- ALTER TABLE conference_papers
+ADD COLUMN id INT(50) PRIMARY KEY AUTO_INCREMENT; -->

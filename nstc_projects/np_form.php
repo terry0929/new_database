@@ -31,7 +31,6 @@ if (isset($_SESSION['user_id'])) {
         <label><h3>計劃摘要</h3><br><textarea name="summary" placeholder="請輸入計劃摘要" style="width:80%; padding:10px; font-size: 16px;"></textarea></label><br><br>
         <label><h3>備註</h3><br><textarea name="remarks" placeholder="請輸入備註" style="width:80%; padding:10px; font-size: 16px;"></textarea></label><br><br>
         <input type="hidden" name="teacher_id" value="<?= htmlspecialchars($teacher_id) ?>">
-        <input type="hidden" name="category" value="np">
         <div style="display: flex; justify-content: center; margin-top: 20px;">
             <input type="submit" value="儲存" style="padding: 10px 20px; width: 60%; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius:8px; cursor: pointer; transition: background-color 0.3s;">
         </div>

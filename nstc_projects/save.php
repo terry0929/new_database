@@ -18,7 +18,8 @@ if (
     $end_date = $_POST['end_date'];
     $upload_date = $_POST['upload_date'];
     $remarks = $_POST['remarks'];
-    $category = 'np';
+    $type = 'np';
+    $result_id = uniqid('R');
 
 
     // ✅ 抓目前登入使用者的 teacher_id
@@ -29,16 +30,19 @@ if (
     $teacher_row = $result->fetch_assoc();
     $teacher_id = $teacher_row['teacher_id'];
 
-    // ✅ 插入研究成果
-    $stmt = $conn->prepare("INSERT INTO nstc_projects
-        (teacher_id, category, title, author, summary, project_number, funding_agency, amount, starts_date, end_date, upload_date, remarks)
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssssissss", $teacher_id, $category, $title, $author, $summary, $project_number, $funding_agency, $amount, $starts_date, $end_date, $upload_date, $remarks);
+    $stmt = $conn->prepare("INSERT INTO researchs_result (result_id, type) VALUES (?, ?)");
+    $stmt->bind_param("ss", $result_id, $type);
     $stmt->execute();
 
-    $new_result_id = $conn->insert_id;
-    $link = $conn->prepare("INSERT INTO teacher_research (teacher_id, result_id, category) VALUES (?, ?, ?)");
-    $link->bind_param("sis", $teacher_id, $new_result_id, $category);
+    // ✅ 插入研究成果
+    $stmt = $conn->prepare("INSERT INTO nstc_projects
+        (result_id, title, author, summary, project_number, funding_agency, amount, starts_date, end_date, upload_date, remarks)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssissss", $result_id, $title, $author, $summary, $project_number, $funding_agency, $amount, $starts_date, $end_date, $upload_date, $remarks);
+    $stmt->execute();
+
+    $link = $conn->prepare("INSERT INTO Teacher_research (teachers_id, results_id) VALUES (?, ?)");
+    $link->bind_param("ss", $teacher_id, $result_id);
     $link->execute();
 
     header("Location: /~D1285210/research/list.php");

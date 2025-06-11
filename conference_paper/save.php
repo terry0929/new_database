@@ -24,18 +24,22 @@ if (
     $result = $stmt->get_result();
     $teacher_row = $result->fetch_assoc();
     $teacher_id = $teacher_row['teacher_id'];
-    $category = 'cp';
+    $type = 'cp';
+    $result_id = uniqid('R');
+
+    $stmt = $conn->prepare("INSERT INTO researchs_result (result_id, type) VALUES (?, ?)");
+    $stmt->bind_param("ss", $result_id, $type);
+    $stmt->execute();
 
     // ✅ 插入研究成果
     $stmt = $conn->prepare("INSERT INTO conference_papers
-        (teacher_id, category, title, author, summary, conference_name, locations, conference_date, upload_date, remarks)
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )"); 
-    $stmt->bind_param("ssssssssss", $teacher_id, $category, $title, $author, $summary, $conference_name, $locations, $conference_date, $upload_date, $remarks);
+        (result_id, title, author, summary, conference_name, locations, conference_date, upload_date, remarks)
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+    $stmt->bind_param("sssssssss", $result_id, $title, $author, $summary, $conference_name, $locations, $conference_date, $upload_date, $remarks);
     $stmt->execute();
 
-    $new_result_id = $conn->insert_id;
-    $link = $conn->prepare("INSERT INTO teacher_research (teacher_id, result_id, category) VALUES (?, ?, ?)");
-    $link->bind_param("sis", $teacher_id, $new_result_id, $category);
+    $link = $conn->prepare("INSERT INTO Teacher_research (teachers_id, results_id) VALUES (?, ?)");
+    $link->bind_param("ss", $teacher_id, $result_id);
     $link->execute();
 
     header("Location: /~D1285210/research/list.php");
