@@ -158,7 +158,7 @@ $result5 = $result5->get_result();
             <td><?= htmlspecialchars($r['summary']) ?></td>
             <td><?= htmlspecialchars($r['upload_date']) ?></td>
             <td>
-                <a href="/~D1285210/snstc_projects/np_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
+                <a href="/~D1285210/nstc_projects/np_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
                 <a href="/~D1285210/nstc_projects/np_delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
             </td>
         </tr>

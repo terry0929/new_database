@@ -9,7 +9,7 @@ $stmt = $conn->prepare(
     WHERE result_id=?
 ");
 
-$stmt->bind_param("ssssssssss",
+$stmt->bind_param("ssssisssss",
     $_POST['title'],
     $_POST['author'],
     $_POST['summary'],
