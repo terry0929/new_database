@@ -178,7 +178,7 @@ $photoPath = $teacher['photo']
     color: #333;
   }
 
-  h3 {
+  .page-content h3 {
     font-size: 26px; /* 標題字體加大 */
     margin-bottom: 20px;
     color: #333;
