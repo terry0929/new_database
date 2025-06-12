@@ -35,18 +35,17 @@ if (isset($_POST['day'], $_POST['start_time'], $_POST['end_time'])) {
 
 // 插入課程資料
 $stmt = $conn->prepare("
-    INSERT INTO course (name, location, time, semester, credits, teacher_name, syllabus, teacher_id)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO course (name, location, time, semester, credits, syllabus, teacher_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
 
 $stmt->bind_param(
-    "ssssisss",
+    "ssssiss",
     $_POST['name'],               // 課程名稱
     $_POST['location'],           // 地點
     $time,                        // 組合好的時間
     $_POST['semester'],           // 學期
     $_POST['credits'],            // 學分
-    $_POST['teacher_name'],       // 授課教師
     $_POST['syllabus'],           // 課程大綱
     $teacher_id                   // 教師 ID
 );

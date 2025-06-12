@@ -16,7 +16,12 @@ $stmt->execute();
 $teacher_id = $stmt->get_result()->fetch_assoc()['teacher_id'] ?? '';
 
 // 查詢登入者所授的所有課程
-$stmt = $conn->prepare("SELECT * FROM course WHERE teacher_id = ? ORDER BY course_id ASC");
+$stmt = $conn->prepare("SELECT c.*, t.name AS teacher_name 
+                        FROM course c
+                        JOIN teacher t ON c.teacher_id = t.teacher_id
+                        WHERE c.teacher_id = ?
+                        ORDER BY c.course_id ASC");
+
 $stmt->bind_param("s", $teacher_id);
 $stmt->execute();
 $courses = $stmt->get_result();

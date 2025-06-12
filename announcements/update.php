@@ -1,28 +1,22 @@
+
 <?php
 include '../common/db.php';
 
-// 1. 處理 post_date 正確格式
-$post_date_raw = $_POST['post_date'];
-$post_date = str_replace('/', '-', $post_date_raw);
+$id = $_POST['announcement_id'];
+$title = $_POST['title'];
+$post_date = $_POST['post_date'];
+$content = $_POST['content'];
+$teacher_id = $_POST['teacher_id'];
 
-// 2. 準備更新
-$stmt = $conn->prepare("UPDATE announcement SET 
-    title = ?, content = ?, category = ?, post_date = ?, poster_name = ? 
-    WHERE announcement_id = ?");
-
-$stmt->bind_param("sssssi",
-    $_POST['title'],
-    $_POST['content'],
-    $_POST['category'],
-    $post_date,
-    $_POST['poster_name'],
-    $_POST['announcement_id']
-);
-
-if ($stmt->execute()) {
-    header("Location: /~D1285210/announcements/manage.php");
-    exit;
-} else {
-    echo "❌ 更新失敗：" . $stmt->error;
+$category = '';
+if (!empty($_POST['category']) && is_array($_POST['category'])) {
+    $category = implode(',', array_map('trim', $_POST['category']));
 }
+
+$stmt = $conn->prepare("UPDATE announcement SET title=?, post_date=?, content=?, category=?, teacher_id=? WHERE announcement_id=?");
+$stmt->bind_param("sssssi", $title, $post_date, $content, $category, $teacher_id, $id);
+$stmt->execute();
+
+header("Location: /~D1285210/announcements/manage.php");
+exit;
 ?>

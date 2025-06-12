@@ -35,6 +35,14 @@ $params = [
     $_POST['research_field']
 ];
 $types = "ssssss";
+$category_string = '';
+if (!empty($_POST['category']) && is_array($_POST['category'])) {
+    $category_string = implode(',', array_map('trim', $_POST['category']));
+}
+$sql .= ", category=?";
+$params[] = $category_string;
+$types .= "s";
+
 
 if ($photo) {
     $sql .= ", photo=?";
@@ -55,5 +63,5 @@ $stmt->bind_param($types, ...$params);
 $stmt->execute();
 
 // 導向個人頁面
-header("Location: ../teachers/manage.php?id=$teacher_id");
+header("Location: ../teachers/detail.php?id=$teacher_id");
 exit;

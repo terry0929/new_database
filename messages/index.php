@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include('../common/db.php');
@@ -23,13 +24,13 @@ while ($r = $res->fetch_assoc()) {
 // 學生名稱對應
 $res = $conn->query("SELECT student_id, name FROM student_account");
 while ($r = $res->fetch_assoc()) {
-    $name_map[$r['student_id']] = $r['name'];  // ✅ 修正這行
+    $name_map[$r['student_id']] = $r['name'];
 }
 
-// 取得與自己有關的所有訊息
+// 撈出所有與自己有關的訊息
 $stmt = $conn->prepare("
-    SELECT sender_id, receiver_id, message_text, sent_time 
-    FROM messages 
+    SELECT sender_id, receiver_id, message_text, sent_time, is_read
+    FROM messages
     WHERE sender_id = ? OR receiver_id = ?
     ORDER BY sent_time DESC
 ");
@@ -37,28 +38,29 @@ $stmt->bind_param("ss", $user_id, $user_id);
 $stmt->execute();
 $all_msgs = $stmt->get_result();
 
-// 整理對話對象
-$dialogues = []; // contact_id => [msg, time]
-
+// 整理對話清單
+$dialogues = [];  // contact_id => [msg, time, unread]
 while ($row = $all_msgs->fetch_assoc()) {
     $sender = $row['sender_id'];
     $receiver = $row['receiver_id'];
-
     $contact_id = ($sender == $user_id) ? $receiver : $sender;
 
-    // ❗排除「自己傳給自己」
     if ($contact_id == $user_id) continue;
 
     if (!isset($dialogues[$contact_id])) {
         $dialogues[$contact_id] = [
             'contact_id' => $contact_id,
             'last_msg' => $row['message_text'],
-            'last_time' => $row['sent_time']
+            'last_time' => $row['sent_time'],
+            'unread' => 0
         ];
     }
+
+    // ✅ 若該訊息是對方傳給我且尚未讀取，加未讀標記
+    if ($receiver == $user_id && $row['is_read'] == 0) {
+        $dialogues[$contact_id]['unread'] = 1;
+    }
 }
-
-
 ?>
 
 <div class="page-content">
@@ -71,56 +73,25 @@ while ($row = $all_msgs->fetch_assoc()) {
 
     <?php if (count($dialogues) > 0): ?>
         <ul class="chat-list">
-            <?php foreach ($dialogues as $d): 
+            <?php foreach ($dialogues as $d):
                 $cid = $d['contact_id'];
                 $contact_name = $name_map[$cid] ?? $cid;
-            ?>
-                <li>
-                    <a href="chat.php?target_id=<?= $cid ?>">
-                        <div class="chat-item">
-                            👤 <?= htmlspecialchars($contact_name) ?><br>
-                            <small><?= htmlspecialchars($d['last_msg']) ?> · <?= substr($d['last_time'], 0, 10) ?></small>
-                        </div>
-                    </a>
+                if ($search && strpos($contact_name, $search) === false) continue;
+                ?>
+                <li style="margin-bottom: 12px;">
+                    <a href="chat.php?target_id=<?= urlencode($cid) ?>" style="text-decoration: none;">
+                        <?= htmlspecialchars($contact_name) ?>
+                        <?php if ($d['unread']): ?>
+                            <span style="color:red;">●</span>
+                        <?php endif; ?>
+                    </a><br>
+                    <small style="color:gray;"><?= htmlspecialchars($d['last_msg']) ?> ‧ <?= $d['last_time'] ?></small>
                 </li>
             <?php endforeach; ?>
         </ul>
     <?php else: ?>
-        <p style="text-align:center; font-size: 18px; color: #777;">❗目前尚無任何對話</p>
+        <p>❗ 目前沒有任何對話紀錄。</p>
     <?php endif; ?>
-
-    <hr><br>
-
-    <?php
-    if (!empty($search)) {
-        $like = "%" . $search . "%";
-        $stmt = $conn->prepare("SELECT teacher_id, name FROM teacher WHERE name LIKE ?");
-        $stmt->bind_param("s", $like);
-        $stmt->execute();
-        $teachers = $stmt->get_result();
-
-        if ($teachers->num_rows > 0) {
-            echo "<ul class='chat-list'>";
-            while ($t = $teachers->fetch_assoc()) {
-                echo "<li><a href='chat.php?target_id={$t['teacher_id']}'><div class='chat-item'>👨‍🏫 " . htmlspecialchars($t['name']) . "</div></a></li>";
-            }
-            echo "</ul>";
-        } else {
-            echo "<p>查無符合的老師。</p>";
-        }
-    }
-    ?>
 </div>
-
-<style>
-.chat-list { list-style: none; padding: 0; }
-.chat-item {
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
-}
-.chat-item:hover {
-    background-color: #eef;
-}
-</style>
 
 <?php include('../common/footer.php'); ?>

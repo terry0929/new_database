@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 include '../common/db.php';
 
 // 確認接收到的 POST 資料是否有效
-if (!isset($_POST['day'], $_POST['start_time'], $_POST['end_time'], $_POST['name'], $_POST['location'], $_POST['semester'], $_POST['credits'], $_POST['teacher_name'], $_POST['syllabus'], $_POST['course_id'])) {
+if (!isset($_POST['day'], $_POST['start_time'], $_POST['end_time'], $_POST['name'], $_POST['location'], $_POST['semester'], $_POST['credits'], $_POST['syllabus'], $_POST['course_id'])) {
     echo "❌ 請填寫所有必要的資料。";
     exit;
 }
@@ -14,7 +14,7 @@ $time = "星期" . $_POST['day'] . " 第" . $_POST['start_time'] . "節 ~ 第" .
 
 // 使用預處理語句更新課程資料
 $stmt = $conn->prepare("UPDATE course SET
-    name = ?, location = ?, time = ?, semester = ?, credits = ?, teacher_name = ?, syllabus = ?
+    name = ?, location = ?, time = ?, semester = ?, credits = ?, syllabus = ?
     WHERE course_id = ?");
 
 if ($stmt === false) {
@@ -22,13 +22,12 @@ if ($stmt === false) {
 }
 
 // 綁定參數
-$stmt->bind_param("sssssssi",
+$stmt->bind_param("ssssssi",
     $_POST['name'],
     $_POST['location'],
     $time,
     $_POST['semester'],
     $_POST['credits'],
-    $_POST['teacher_name'],
     $_POST['syllabus'],
     $_POST['course_id']
 );
