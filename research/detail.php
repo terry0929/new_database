@@ -1,5 +1,6 @@
 <?php
 include('../common/db.php');
+include('../common/header.php');
 
 $result_id = $_GET['id'] ?? '';
 if (!$result_id) {
@@ -119,7 +120,8 @@ $data = $stmt->get_result()->fetch_assoc();
     }
     ?>
     
-    <a href="list.php" class="back">← 回研究成果列表</a>
   </div>
 </body>
 </html>
+<?php
+include('../common/footer.php');

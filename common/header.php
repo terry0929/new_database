@@ -50,7 +50,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <div class="logo">👨‍🏫 教師資訊系統</div>
     <nav>
         <a href="/~D1285210/index.php">🏠 首頁</a>
-        <a href="/~D1285210/teachers/list.php?category=系主任">👨‍🏫 教師</a>
+        <a href="/~D1285210/teachers/list.php">👨‍🏫 教師</a>
         <a href="/~D1285210/announcements/list.php">📢 公告</a>
         <a href="/~D1285210/courses/timetable_select.php">📘 課程</a>
         <a href="/~D1285210/reservation/list.php">📅 空間預約</a>
