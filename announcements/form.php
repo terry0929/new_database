@@ -1,5 +1,6 @@
 
 <?php
+session_start();
 include '../common/db.php';
 include '../common/header.php';
 
@@ -25,7 +26,9 @@ $today = date('Y-m-d');
 
 <div class="page-content">
     <h2>➕ 新增公告</h2>
-    <form action="/~D1285210/announcements/save.php" method="post">
+    <form action="/~D1285210/announcements/save.php" method="post" enctype="multipart/form-data">
+        <label>公告圖片：</label>
+         <label><br><input type="file" name="image" accept="image/*" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>標題:</h3><br>
             <input type="text" name="title" style="width:80%; padding:10px; font-size: 16px;">
         </label><br><br>

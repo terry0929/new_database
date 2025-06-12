@@ -1,4 +1,3 @@
-
 <?php
 include '../common/db.php';
 include '../common/header.php';
@@ -7,7 +6,6 @@ $categories = ['所有人員', '系主任', '榮譽特聘講座', '講座教授'
 $selected_category = $_GET['category'] ?? null;
 $keyword = $_GET['q'] ?? '';
 
-// ✅ 排除「所有人員」 → 不套分類過濾
 if ($selected_category === '所有人員') {
     $selected_category = null;
 }
@@ -45,7 +43,6 @@ if ($selected_category && $keyword !== '') {
 
 <div class="page-content">
 <div style="display: flex;">
-  <!-- 側邊分類 -->
   <aside style="width: 200px; padding: 20px; border-right: 1px solid #ccc; background-color: #f9f9f9;">
     <h3>📁 類別分類</h3><br>
     <ul style="list-style-type: none; padding: 0;">
@@ -59,7 +56,6 @@ if ($selected_category && $keyword !== '') {
     </ul>
   </aside>
 
-  <!-- 教師清單 -->
   <main style="flex: 1; padding: 20px;">
     <h2>👨‍🏫 教師清單 <?= $selected_category ? " - 分類：" . htmlspecialchars($_GET['category']) : "" ?></h2>
 
@@ -75,31 +71,68 @@ if ($selected_category && $keyword !== '') {
     <?php if ($result->num_rows === 0): ?>
         <p style="color: red;">❗ 找不到符合條件的教師。</p>
     <?php else: ?>
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th>姓名</th>
-            <th>信箱</th>
-            <th>電話</th>
-            <th>職稱</th>
-            <th>詳細資料</th>
-          </tr>
-        </thead>
-        <tbody>
-        <?php while ($row = $result->fetch_assoc()): ?>
-          <tr>
-            <td><?= htmlspecialchars($row['name']) ?></td>
-            <td><?= htmlspecialchars($row['email']) ?></td>
-            <td><?= htmlspecialchars($row['phone']) ?></td>
-            <td><?= htmlspecialchars($row['title']) ?></td>
-            <td><a href="detail.php?id=<?= $row['teacher_id'] ?>">🔍 <strong>查看</strong></a></td>
-          </tr>
-        <?php endwhile; ?>
-        </tbody>
-      </table>
+    <div class="teacher-grid">
+      <?php while ($row = $result->fetch_assoc()): ?>
+        <div class="teacher-card">
+          <div class="photo">
+            <img src="<?= $row['photo'] ? '/~D1285210/uploads/' . $row['photo'] : '/~D1285210/common/default_avatar.png' ?>" alt="照片">
+          </div>
+          <div class="info">
+            <h3><?= htmlspecialchars($row['name']) ?></h3>
+            <p>職稱：<?= htmlspecialchars($row['title']) ?></p>
+            <p>電話：<?= htmlspecialchars($row['phone']) ?></p>
+            <p><a href="detail.php?id=<?= $row['teacher_id'] ?>">🔍 查看</a></p>
+          </div>
+        </div>
+      <?php endwhile; ?>
+    </div>
     <?php endif; ?>
   </main>
 </div>
 </div>
+
+<style>
+.teacher-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  margin-top: 20px;
+}
+.teacher-card {
+  display: flex;
+  width: 420px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+}
+.teacher-card .photo img {
+  width: 140px;
+  height: 180px;
+  object-fit: cover;
+  border-right: 1px solid #ccc;
+}
+.teacher-card .info {
+  padding: 15px;
+}
+.teacher-card h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #333;
+}
+.teacher-card p {
+  margin: 4px 0;
+  font-size: 16px;
+  color: #555;
+}
+.teacher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+  margin-top: 20px;
+}
+
+</style>
 
 <?php include '../common/footer.php'; ?>

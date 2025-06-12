@@ -21,16 +21,21 @@ if ($result->num_rows === 0) {
     echo "<div class='page-content'><p>⚠️ 查無此公告。</p></div>";
 } else {
     $row = $result->fetch_assoc();
+    $photoPath = !empty($row['image']) ? "/~D1285210/uploads_ann/" . $row['image'] : null;
 ?>
 
 <div class="page-content">
-    <h2>📢 公告詳情</h2>
+    <h2>📢 公告詳情</h2><br><br>
     <table border="1" cellpadding="8" cellspacing="0">
-        <tr><th>標題</th><td><?= htmlspecialchars($row['title']) ?></td></tr>
-        <tr><th>分類</th><td><?= htmlspecialchars($row['category']) ?></td></tr>
-        <tr><th>發佈人</th><td><?= htmlspecialchars($row['teacher_name']) ?></td></tr>
-        <tr><th>發佈日期</th><td><?= htmlspecialchars($row['post_date']) ?></td></tr>
-        <tr><th>內容</th><td><?= nl2br(htmlspecialchars($row['content'])) ?></td></tr>
+            <?php if ($photoPath): ?>
+                <img src="<?= $photoPath ?>" alt="公告圖片" style="max-width: 50%; height: auto; margin: 0 auto;">
+            <?php else: ?>
+                無圖片
+            <?php endif; ?>
+        <br><br><h3>標題</h3><?= htmlspecialchars($row['title']) ?>
+        <br><br><h3>發佈日期</h3><?= htmlspecialchars($row['post_date']) ?>
+        <br><br><h3>發佈者</h3><?= htmlspecialchars($row['teacher_name']) ?>
+        <br><br><h3>內容</h3><?= nl2br(htmlspecialchars($row['content'])) ?>
     </table>
 </div>
 

@@ -2,6 +2,7 @@
 include '../common/db.php';
 include '../common/header.php';
 
+
 if (!isset($_GET['id'])) {
     echo "<div class='page-content'><p>⚠️ 未指定教師 ID</p></div>";
     include '../common/footer.php'; exit;
@@ -19,6 +20,9 @@ if (!$teacher) {
     echo "<div class='page-content'><p>⚠️ 找不到這位教師</p></div>";
     include '../common/footer.php'; exit;
 }
+
+$educations = explode('、', $teacher['education']);
+$researches = explode('、', $teacher['research_field']);
 
 // 頭像處理
 $photoPath = $teacher['photo']
@@ -42,28 +46,74 @@ $photoPath = $teacher['photo']
         <ul>
             <li><strong>教師編號：</strong><?= htmlspecialchars($teacher['teacher_id']) ?></li>
             <li><strong>信箱：</strong><?= htmlspecialchars($teacher['email']) ?></li>
-            <li><strong>電話：</strong><?= htmlspecialchars($teacher['phone']) ?></li>
+            <li><strong>分機電話：</strong><?= htmlspecialchars($teacher['phone']) ?></li>
+            <li><a href="/~D1285210/courses/timetable.php?teacher_search=<?= htmlspecialchars($teacher['name']) ?>">查看課表時間</a></li>
         </ul>
     </div>
     <br></br>
-    <h3>教師經歷</h3>
-    <ul class="experience-list">
+    <div style="display: flex; gap: 60px; font-size: 18px;">
+    <!-- 學歷欄 -->
+    <div style="flex: 1;">
+      <h3>學歷</h3>
+      <?php foreach ($educations as $edu): ?>
+        <li><?= nl2br(htmlspecialchars(trim($edu))) ?></li>
+      <?php endforeach; ?>
+    </div>
+
+    <!-- 專長欄 -->
+    <div style="flex: 1;">
+      <h3>專長</h3>
+      <?php foreach ($researches as $field): ?>
+        <li><?= nl2br(htmlspecialchars(trim($field))) ?></li>
+      <?php endforeach; ?>
+    </div>
+  </div><br></br>
+
     <?php
+    $in_exps = [];
+    $out_exps = [];
+
     $exp = $conn->prepare("SELECT * FROM experience WHERE teacher_id = ?");
     $exp->bind_param("s", $id);
     $exp->execute();
     $exp_result = $exp->get_result();
-    if ($exp_result->num_rows > 0):
-        while ($e = $exp_result->fetch_assoc()):
+
+    while ($e = $exp_result->fetch_assoc()) {
+        if ($e['type'] === 'in') {
+            $in_exps[] = $e['description'];
+        } else {
+            $out_exps[] = $e['description'];
+        }
+    }
     ?>
-        <li><?= $e['type'] === 'in' ? '校內' : '校外' ?>：<?= htmlspecialchars($e['description']) ?></li>
-    <?php
-        endwhile;
-    else:
-        echo "<li>尚無經歷資料。</li>";
-    endif;
-    ?>
-    </ul>
+
+    <div style="display: flex; gap: 60px; font-size: 18px;">
+
+      <!-- 校內經歷 -->
+      <div style="flex: 1;">
+        <h3>校內經歷</h3>
+        <?php if (!empty($in_exps)): ?>
+          <?php foreach ($in_exps as $in): ?>
+            <li><?= htmlspecialchars($in) ?></li>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <div>尚無校內經歷</div>
+        <?php endif; ?>
+      </div>
+
+      <!-- 校外經歷 -->
+      <div style="flex: 1;">
+        <h3>校外經歷</h3>
+        <?php if (!empty($out_exps)): ?>
+          <?php foreach ($out_exps as $out): ?>
+            <li><?= htmlspecialchars($out) ?></li>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <div>尚無校外經歷</div>
+        <?php endif; ?>
+      </div>
+    </div>
+
     <br></br>
     <h3>研究成果</h3>
     <ul class="research-list">
