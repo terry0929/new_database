@@ -122,10 +122,16 @@ $photoPath = $teacher['photo']
                 <strong>標題：</strong>
                   <?= htmlspecialchars($r['title']) ?>
               </div>
-                <div>
-                  <strong>摘要：</strong><?= htmlspecialchars($r['summary']) ?>
-                </div>
-                （<?= htmlspecialchars($r['publish_date']) ?>）
+              <div>
+                <strong>作者：</strong>
+                  <?= htmlspecialchars($r['author']) ?>
+              </div>
+              <div>
+                <strong>摘要：</strong><?= htmlspecialchars($r['summary']) ?>
+              </div>
+              <div>
+                <strong>檔案建置時間：</strong><?= htmlspecialchars($r['publish_date']) ?>
+              </div>
             </div>
           </a>
         <?php endforeach; ?>

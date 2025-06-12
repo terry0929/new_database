@@ -92,8 +92,8 @@ $result5 = $result5->get_result();
             <td><?= htmlspecialchars($r['summary']) ?></td>
             <td><?= htmlspecialchars($r['upload_date']) ?></td>
             <td>
-                <a href="/~D1285210/research/edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
-                <a href="/~D1285210/journal_article/delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
+                <a href="/~D1285210/journal_article/ja_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
+                <a href="/~D1285210/journal_article/ja_delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -114,8 +114,8 @@ $result5 = $result5->get_result();
             <td><?= htmlspecialchars($r['summary']) ?></td>
             <td><?= htmlspecialchars($r['upload_date']) ?></td>
             <td>
-                <a href="/~D1285210/research/edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
-                <a href="/~D1285210/conference_paper/delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
+                <a href="/~D1285210/conference_paper/cp_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
+                <a href="/~D1285210/conference_paper/cp_delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -136,8 +136,8 @@ $result5 = $result5->get_result();
             <td><?= htmlspecialchars($r['summary']) ?></td>
             <td><?= htmlspecialchars($r['upload_date']) ?></td>
             <td>
-                <a href="/~D1285210/research/edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
-                <a href="/~D1285210/books_reports/delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
+                <a href="/~D1285210/books_reports/br_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
+                <a href="/~D1285210/books_reports/br_delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -158,8 +158,8 @@ $result5 = $result5->get_result();
             <td><?= htmlspecialchars($r['summary']) ?></td>
             <td><?= htmlspecialchars($r['upload_date']) ?></td>
             <td>
-                <a href="/~D1285210/research/edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
-                <a href="/~D1285210/nstc_projects/delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
+                <a href="/~D1285210/snstc_projects/np_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
+                <a href="/~D1285210/nstc_projects/np_delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
             </td>
         </tr>
         <?php endwhile; ?>
@@ -180,8 +180,8 @@ $result5 = $result5->get_result();
             <td><?= htmlspecialchars($r['outcome']) ?></td>
             <td><?= htmlspecialchars($r['upload_date']) ?></td>
             <td>
-                <a href="/~D1285210/research/edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
-                <a href="/~D1285210/industry_projects/delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
+                <a href="/~D1285210/industry_projects/ind_edit.php?id=<?= $r['result_id'] ?>">✏️ 編輯</a> |
+                <a href="/~D1285210/industry_projects/ind_delete.php?id=<?= $r['result_id'] ?>" onclick="return confirm('確定刪除？')">🗑️ 刪除</a>
             </td>
         </tr>
         <?php endwhile; ?>
