@@ -8,7 +8,7 @@ if (!isset($_GET['id'])) {
 
 $id = $_GET['id'];
 $stmt = $conn->prepare("SELECT * FROM nstc_projects WHERE result_id = ?");
-$stmt->bind_param("i", $id);
+$stmt->bind_param("s", $id);
 $stmt->execute();
 $data = $stmt->get_result()->fetch_assoc();
 
