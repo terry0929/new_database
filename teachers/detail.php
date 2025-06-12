@@ -68,31 +68,72 @@ $photoPath = $teacher['photo']
     <h3>研究成果</h3>
     <ul class="research-list">
     <?php
-    $research = $conn->prepare("
-        SELECT rr.* 
-        FROM research_result rr
-        JOIN teacher_research tr ON rr.result_id = tr.result_id
-        WHERE tr.teacher_id = ?
-    ");
+    $research = $conn->prepare(
+      "SELECT rr.result_id, rr.type, rr.created_at AS publish_date,
+           CASE rr.type
+               WHEN 'ja' THEN ja.title
+               WHEN 'cp' THEN cp.title
+               WHEN 'br' THEN br.title
+               WHEN 'np' THEN np.title
+               WHEN 'ind' THEN ind.title
+           END AS title,
+           CASE rr.type
+               WHEN 'ja' THEN ja.summary
+               WHEN 'cp' THEN cp.summary
+               WHEN 'br' THEN br.summary
+               WHEN 'np' THEN np.summary
+               WHEN 'ind' THEN ind.outcome
+           END AS summary
+        FROM researchs_result rr
+        JOIN Teacher_research tr ON rr.result_id = tr.results_id
+        LEFT JOIN journal_articles ja ON rr.result_id = ja.result_id
+        LEFT JOIN conference_papers cp ON rr.result_id = cp.result_id
+        LEFT JOIN books_reports br ON rr.result_id = br.result_id
+        LEFT JOIN nstc_projects np ON rr.result_id = np.result_id
+        LEFT JOIN industry_projects ind ON rr.result_id = ind.result_id
+        WHERE tr.teachers_id = ?
+        ORDER BY rr.created_at DESC"
+    );
     $research->bind_param("s", $id);
     $research->execute();
     $research_result = $research->get_result();
 
-    if ($research_result->num_rows > 0):
-        while ($r = $research_result->fetch_assoc()):
-    ?>
-        <li>
-            <?= htmlspecialchars($r['title']) ?>
-            （<?= htmlspecialchars($r['type1']) ?> / <?= htmlspecialchars($r['type2']) ?>）
-            （<?= htmlspecialchars($r['publish_date']) ?>）
-        </li>
-    <?php
-        endwhile;
-    else:
-        echo "<li>尚無研究成果資料。</li>";
-    endif;
-    ?>
+    $categories = [
+    'ja' => '期刊論文',
+    'cp' => '會議論文',
+    'br' => '專書與技術報告',
+    'np' => '國科會計劃',
+    'ind' => '產學合作計劃'];
+
+    $research_data = [];
+    while ($r = $research_result->fetch_assoc()) {
+        $research_data[$r['type']][] = $r;
+    }
+
+    foreach ($categories as $type => $label):
+?>
+    <h4><?= htmlspecialchars($label) ?></h4>
+    <ul class="research-list">
+    <?php if (!empty($research_data[$type])): ?>
+        <?php foreach ($research_data[$type] as $r): ?>
+          <a href="/~D1285210/research/detail.php?id=<?= htmlspecialchars($r['result_id']) ?>">
+            <div class="research-box">
+              <div>
+                <strong>標題：</strong>
+                  <?= htmlspecialchars($r['title']) ?>
+              </div>
+                <div>
+                  <strong>摘要：</strong><?= htmlspecialchars($r['summary']) ?>
+                </div>
+                （<?= htmlspecialchars($r['publish_date']) ?>）
+            </div>
+          </a>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <li>尚無 <?= htmlspecialchars($label) ?> 資料。</li>
+    <?php endif; ?>
     </ul>
+<?php endforeach; ?>
 </div>
 
 <?php include '../common/footer.php'; ?>
@@ -166,5 +207,14 @@ $photoPath = $teacher['photo']
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 30px auto;
     width: 80%;
+  }
+
+  .research-content {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 30px 0;
+    width: 100%;
   }
 </style>
