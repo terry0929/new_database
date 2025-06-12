@@ -83,7 +83,14 @@ $photoPath = $teacher['photo']
                WHEN 'br' THEN br.summary
                WHEN 'np' THEN np.summary
                WHEN 'ind' THEN ind.outcome
-           END AS summary
+           END AS summary,
+           CASE rr.type
+               WHEN 'ja' THEN ja.author
+               WHEN 'cp' THEN cp.author
+               WHEN 'br' THEN br.author
+               WHEN 'np' THEN np.author
+               WHEN 'ind' THEN ind.author
+           END AS author
         FROM researchs_result rr
         JOIN Teacher_research tr ON rr.result_id = tr.results_id
         LEFT JOIN journal_articles ja ON rr.result_id = ja.result_id
@@ -116,8 +123,9 @@ $photoPath = $teacher['photo']
     <ul class="research-list">
     <?php if (!empty($research_data[$type])): ?>
         <?php foreach ($research_data[$type] as $r): ?>
-          <a href="/~D1285210/research/detail.php?id=<?= htmlspecialchars($r['result_id']) ?>">
-            <div class="research-box">
+          <div class="research-box">
+            <a href="/~D1285210/research/detail.php?id=<?= htmlspecialchars($r['result_id']) ?>">
+            <div>
               <div>
                 <strong>標題：</strong>
                   <?= htmlspecialchars($r['title']) ?>
@@ -134,6 +142,7 @@ $photoPath = $teacher['photo']
               </div>
             </div>
           </a>
+          </div>
         <?php endforeach; ?>
     <?php else: ?>
         <li>尚無 <?= htmlspecialchars($label) ?> 資料。</li>

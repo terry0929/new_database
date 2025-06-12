@@ -37,7 +37,7 @@ if (
     $stmt = $conn->prepare("INSERT INTO books_reports
         (result_id, title, author, summary, publisher, isbn, chapter_info, book_type, upload_date, remarks)
         VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssssssss", $result_id, $title, $author, $summary, $publisher, $isbn, $chapter_info, $book_type, $upload_date, $remarks);
+    $stmt->bind_param("sssssissss", $result_id, $title, $author, $summary, $publisher, $isbn, $chapter_info, $book_type, $upload_date, $remarks);
     $stmt->execute();
 
     $link = $conn->prepare("INSERT INTO Teacher_research (teachers_id, results_id) VALUES (?, ?)");
