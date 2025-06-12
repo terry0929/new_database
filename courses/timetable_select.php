@@ -2,7 +2,8 @@
 include '../common/db.php';
 include '../common/header.php';
 
-$result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_name IS NOT NULL");
+// 從 teacher 表抓所有老師
+$result = $conn->query("SELECT teacher_id, name FROM teacher");
 ?>
 
 <div class="page-content">
@@ -15,11 +16,10 @@ $result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_n
         <label style="white-space: nowrap;"><h3>🔽 選擇老師：</h3></label><br>
         <select name="teacher_select" style="width: 100%; padding: 10px; font-size: 16px;">
           <option value="">請選擇老師</option>
-          <?php
-          $result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_name IS NOT NULL");
-          while ($row = $result->fetch_assoc()):
-          ?>
-            <option value="<?= htmlspecialchars($row['teacher_name']) ?>"><?= htmlspecialchars($row['teacher_name']) ?></option>
+          <?php while ($row = $result->fetch_assoc()): ?>
+            <option value="<?= htmlspecialchars($row['teacher_id']) ?>">
+              <?= htmlspecialchars($row['name']) ?>
+            </option>
           <?php endwhile; ?>
         </select>
       </div>
@@ -41,6 +41,5 @@ $result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_n
     </div>
   </form>
 </div>
-
 
 <?php include '../common/footer.php'; ?>

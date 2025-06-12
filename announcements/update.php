@@ -7,15 +7,14 @@ $post_date = str_replace('/', '-', $post_date_raw);
 
 // 2. 準備更新
 $stmt = $conn->prepare("UPDATE announcement SET 
-    title = ?, content = ?, category = ?, post_date = ?, poster_name = ? 
+    title = ?, content = ?, category = ?, post_date = ?
     WHERE announcement_id = ?");
 
-$stmt->bind_param("sssssi",
+$stmt->bind_param("ssssi",
     $_POST['title'],
     $_POST['content'],
     $_POST['category'],
     $post_date,
-    $_POST['poster_name'],
     $_POST['announcement_id']
 );
 

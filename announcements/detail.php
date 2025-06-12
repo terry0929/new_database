@@ -28,7 +28,7 @@ if ($result->num_rows === 0) {
     <table border="1" cellpadding="8" cellspacing="0">
         <tr><th>標題</th><td><?= htmlspecialchars($row['title']) ?></td></tr>
         <tr><th>分類</th><td><?= htmlspecialchars($row['category']) ?></td></tr>
-        <tr><th>發佈人</th><td><?= htmlspecialchars($row['poster_name']) ?></td></tr>
+        <tr><th>發佈人</th><td><?= htmlspecialchars($row['teacher_name']) ?></td></tr>
         <tr><th>發佈日期</th><td><?= htmlspecialchars($row['post_date']) ?></td></tr>
         <tr><th>內容</th><td><?= nl2br(htmlspecialchars($row['content'])) ?></td></tr>
     </table>

@@ -21,15 +21,14 @@ $post_date = str_replace('/', '-', $post_date_raw);
 
 // 3. 插入公告
 $stmt = $conn->prepare("INSERT INTO announcement 
-    (title, content, category, post_date, poster_name, teacher_id) 
-    VALUES (?, ?, ?, ?, ?, ?)");
+    (title, content, category, post_date, teacher_id) 
+    VALUES (?, ?, ?, ?, ?)");
 
-$stmt->bind_param("ssssss", // ← 最後也用 "s"
+$stmt->bind_param("sssss", // ← 最後也用 "s"
     $_POST['title'],
     $_POST['content'],
     $_POST['category'],
     $post_date,
-    $_POST['poster_name'],
     $teacher_id
 );
 

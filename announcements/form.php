@@ -17,7 +17,7 @@ if (isset($_SESSION['user_id'])) {
     $teacher_result = $stmt->get_result();
     $teacher_data = $teacher_result->fetch_assoc();
     $teacher_id = $teacher_data['teacher_id'] ?? '';
-    $poster_name = $teacher_data['teacher_name'] ?? '';
+    $teacher_name = $teacher_data['teacher_name'] ?? '';
 }
 ?>
 
@@ -26,8 +26,8 @@ if (isset($_SESSION['user_id'])) {
     <form action="/~D1285210/announcements/save.php" method="post">
         <label><h3>標題:</h3><br><input type="text" name="title" value="<?= htmlspecialchars($row['title']) ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>分類:</h3><br><input type="text" name="category" value="<?= $row['category'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
-        <label><h3>發佈人:</h3><br><input type="text" name="poster_name" value="<?= htmlspecialchars($poster_name) ?>" style="width:80%; padding:10px; font-size: 16px;" readonly></label><br><br>
-        <label><h3>發佈日期:</h3><br><input type="date" name="post_date" style="width:80%; padding:10px; font-size: 16px;" value="<?= $row['post_date'] ?>"></label><br><br>
+        <?php $today = date('Y-m-d'); ?>
+        <label><h3>發佈日期:</h3><br><input type="date" name="post_date" style="width:80%; padding:10px; font-size: 16px;" value="<?= $today ?>"></label><br><br>
         <label><h3>內容:</h3><br><textarea name="content" style="width:80%; padding:10px; font-size: 16px;"><?= htmlspecialchars($row['content']) ?></textarea></label><br><br>
         <input type="hidden" name="user_id" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
         <input type="hidden" name="teacher_id" value="<?= htmlspecialchars($teacher_id) ?>">

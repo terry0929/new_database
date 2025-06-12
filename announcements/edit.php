@@ -15,7 +15,6 @@ $row = $stmt->get_result()->fetch_assoc();
     <input type="hidden" name="announcement_id" value="<?= $row['announcement_id'] ?>">
     <label><h3>標題:</h3><br><input type="text" name="title" value="<?= htmlspecialchars($row['title']) ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
     <label><h3>分類:</h3><br><input type="text" name="category" value="<?= $row['category'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
-    <label><h3>發佈人:</h3><br><input type="text" name="poster_name" value="<?= $row['poster_name'] ?>" style="width:80%; padding:10px; font-size: 16px;" readonly></label><br><br>
     <label><h3>發佈日期:</h3><br><input type="date" name="post_date" style="width:80%; padding:10px; font-size: 16px;" value="<?= $row['post_date'] ?>"></label><br><br>
     <label><h3>內容:</h3><br><textarea name="content" style="width:80%; padding:10px; font-size: 16px;"><?= htmlspecialchars($row['content']) ?></textarea></label><br><br>
     <input type="hidden" name="teacher_id" value="<?= htmlspecialchars($teacher_id) ?>">

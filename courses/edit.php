@@ -82,10 +82,6 @@ if (isset($_SESSION['user_id'])) {
             <input type="number" name="credits" value="<?= $course['credits'] ?>" style="width:80%; padding:10px; font-size: 16px;">
         </label><br><br>
 
-        <label><h3>授課教師:</h3><br>
-            <input type="text" name="teacher_name" value="<?= htmlspecialchars($course['teacher_name'] ?: $teacher_name) ?>" style="width:80%; padding:10px; font-size: 16px;" required>
-        </label><br><br>
-
         <label><h3>課程大綱:</h3><br>
             <textarea name="syllabus" style="width:80%; padding:10px; font-size: 16px;"><?= htmlspecialchars($course['syllabus']) ?></textarea>
         </label><br><br>
