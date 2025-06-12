@@ -26,7 +26,6 @@ if (isset($_SESSION['user_id'])) {
         <label><h3>與會地點</h3><br><input type="text" name="locations" placeholder="請輸入與會地點" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>會議日期</h3><br><input type="date" name="conference_date" placeholder="請輸入會議日期" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>上傳日期</h3><br><input type="date" name="upload_date" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
-        <label><h3>文獻簡述</h3><br><input type="text" name="summary" placeholder="請輸入文獻簡述" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>備註</h3><br><input type="text" name="remarks" placeholder="請輸入備註" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <input type="hidden" name="teacher_id" value="<?= htmlspecialchars($teacher_id) ?>">
         <div style="display: flex; justify-content: center; margin-top: 20px;">
