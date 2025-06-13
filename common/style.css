@@ -370,3 +370,57 @@ a:hover {
 .btn-more:hover {
     background-color: #357ac9;
 }
+.section-title {
+  font-size: 20px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  border-left: 6px solid #4a90e2;
+  padding-left: 12px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.dashboard-card {
+  display: block;
+  background-color: #4a90e2;
+  color: white;
+  padding: 24px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  background-color: #357ac9;
+  transform: translateY(-5px);
+}
+.card-announcement {
+  background-color: #4B6587; /* 橘色 */
+}
+.card-announcement:hover {
+  background-color: #4B6587;
+}
+
+.card-course {
+  background-color: #3E8E7E; /* 綠色 */
+}
+.card-course:hover {
+  background-color: #3E8E7E;
+}
+
+.card-reservation {
+  background-color: #A49E8D; /* 紫色 */
+}
+.card-reservation:hover {
+  background-color: #A49E8D;
+}
