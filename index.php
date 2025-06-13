@@ -1,6 +1,8 @@
 <?php
 include 'common/db.php';
 include 'common/header.php';
+$sql = "SELECT announcement_id, title, image FROM announcement ORDER BY post_date DESC LIMIT 4";
+$result = $conn->query($sql);
 ?>
 
 <div class="page-content">
@@ -12,6 +14,19 @@ include 'common/header.php';
     <?php else: ?>
         <p>您已登入，請進入 <a href="/~D1285210/edit_mode.php">控制台</a> 開始管理您的資料。</p>
     <?php endif; ?>
+</div>
+
+
+<div class="page-content">
+  <h2>📢 最新公告</h2>
+  <div class="announcement-grid">
+    <?php while ($row = $result->fetch_assoc()): ?>
+      <a href="announcements/detail.php?id=<?= $row['announcement_id'] ?>" class="announcement-card">
+        <img src="/~D1285210/uploads_ann/<?= htmlspecialchars($row['image']) ?>" alt="公告圖片">
+        <div class="announcement-title"><?= htmlspecialchars($row['title']) ?></div>
+      </a>
+    <?php endwhile; ?>
+  </div>
 </div>
 
 <?php include 'common/footer.php'; ?>
