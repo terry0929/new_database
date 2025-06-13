@@ -26,10 +26,10 @@ if ($result->num_rows === 0) {
 
 <div class="page-content">
     <a href="list.php" style="display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #7f7f7f; color: white; text-decoration: none; border-radius: 5px;">回到對話列表</a><br><br>
-    <h2>📢 公告詳情</h2><br><br>
+    <h2>📢 公告詳情</h2>
     <table border="1" cellpadding="8" cellspacing="0">
             <?php if ($photoPath): ?>
-                <img src="<?= $photoPath ?>" alt="公告圖片" style="max-width: 50%; height: auto; margin: 0 auto;">
+                <img src="<?= $photoPath ?>" alt="公告圖片">
             <?php else: ?>
                 無圖片
             <?php endif; ?>
@@ -44,3 +44,13 @@ if ($result->num_rows === 0) {
 }
 include '../common/footer.php';
 ?>
+
+<style>
+    .page-content img {
+    width: 30%; /* 限制寬度 */
+    height: 30%; /* 限制高度 */
+    object-fit: cover; /* 確保圖片以正方形顯示，裁剪超出部分 */
+    border-radius: 8px; /* 圓角效果 */
+    border: 2px solid #ccc; /* 增加邊框 */
+  }
+</style>
