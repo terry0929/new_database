@@ -1,4 +1,6 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 include '../common/db.php';
 include '../common/header.php';
 
@@ -21,14 +23,34 @@ $stmt = $conn->prepare("SELECT c.*, t.name AS teacher_name
                         JOIN teacher t ON c.teacher_id = t.teacher_id
                         WHERE c.teacher_id = ?
                         ORDER BY c.course_id ASC");
-
+$teacher_name = '';
+if ($teacher_id) {
+    // 查詢教師名稱
+    $stmt_name = $conn->prepare("SELECT name FROM teacher WHERE teacher_id = ?");
+    $stmt_name->bind_param("s", $teacher_id);
+    $stmt_name->execute();
+    $result_name = $stmt_name->get_result();
+    if ($result_name->num_rows > 0) {
+        $teacher_name = $result_name->fetch_assoc()['name'];
+    }
+}
 $stmt->bind_param("s", $teacher_id);
 $stmt->execute();
 $courses = $stmt->get_result();
 ?>
 
 <div class="page-content">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
     <h2>📚 課程一覽表</h2>
+    <a href="/~D1285210/courses/timetable.php?teacher_search=<?= htmlspecialchars($teacher_name) ?>" class="btn-timetable" style="
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+      ">查看我的課表</a>
+    </div>
     <a href="/~D1285210/courses/form.php">➕ 新增課程</a></p>
     <table class="styled-table">
         <thead>

@@ -92,6 +92,25 @@ while ($row = $all_msgs->fetch_assoc()) {
     <?php else: ?>
         <p>❗ 目前沒有任何對話紀錄。</p>
     <?php endif; ?>
+    <ul class="chat-list">
+    <?php if ($search): ?>
+    <ul class="chat-list">
+    <?php
+        $res = $conn->query("SELECT teacher_id, name FROM teacher ORDER BY name");
+        while ($t = $res->fetch_assoc()):
+            $tid = $t['teacher_id'];
+            if ($tid == $user_id || isset($dialogues[$tid])) continue;
+            if (strpos($t['name'], $search) === false) continue;
+        ?>
+            <li style="margin-bottom: 10px;">
+                <a href="chat.php?target_id=<?= urlencode($tid) ?>" style="text-decoration: none;">
+                    <?= htmlspecialchars($t['name']) ?> <small style="color:gray;">（尚未開始對話）</small>
+                </a>
+            </li>
+        <?php endwhile; ?>
+        </ul>
+    <?php endif; ?>
+    </ul>
 </div>
 
 <?php include('../common/footer.php'); ?>

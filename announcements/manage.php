@@ -32,7 +32,6 @@ $announcements = $stmt->get_result();
     <table border="1" cellpadding="8" cellspacing="0">
         <tr>
             <th>標題</th>
-            <th>分類</th>
             <th>發佈日期</th>
             <th>詳細資料</th>
             <th>操作</th>
@@ -41,7 +40,6 @@ $announcements = $stmt->get_result();
         <?php while($row = $announcements->fetch_assoc()): ?>
         <tr>
             <td><?= htmlspecialchars($row['title']) ?></td>
-            <td><?= htmlspecialchars($row['category']) ?></td>
             <td><?= htmlspecialchars($row['post_date']) ?></td>
             <td>
                 <a href="/~D1285210/announcements/detail.php?id=<?= $row['announcement_id'] ?>">🔍 查看</a>

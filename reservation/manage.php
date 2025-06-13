@@ -1,51 +1,107 @@
+
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 include '../common/db.php';
 include '../common/header.php';
 
-// 可依需求判斷只有某些身分能進入此頁
-// 例如：if ($_SESSION['user_id'] !== 'admin') { exit; }
+// 預設日期是今天
+$date = $_GET['date'] ?? date('Y-m-d');
 
-$stmt = $conn->prepare("SELECT * FROM reservation ORDER BY reservation_id DESC");
+// 所有時間格子（8:00~20:00）
+$hours = range(8, 20);
+
+// 空間清單（可以從資料庫撈，這裡寫死）
+$rooms = [
+  '人104(8人)', '人105(8人)', '人205(8人)', '人206(8人)', '人208(6人)',
+  '人B101A(16人)', '人B102A(16人)', '人B103A(12人)', '人B104A(8人)',
+  '人B105A(8人)', '人B113A(8人)', '人B114A(8人)',
+  '圖視聽小間303(5人)', '圖視聽小間304(5人)', '圖視聽小間305(5人)',
+  '討論室320(5人)', '討論室321(5人)'
+];
+
+// 改為同時撈取預約人姓名與 email
+$stmt = $conn->prepare("
+    SELECT r.location, r.start_time, r.end_time, t.name, t.email
+    FROM reservation r
+    JOIN teacher t ON r.teacher_id = t.teacher_id
+    JOIN user_account u ON u.teacher_id = t.teacher_id
+    WHERE r.date = ?
+");
+$stmt->bind_param("s", $date);
 $stmt->execute();
-$reservations = $stmt->get_result();
+$reserved = $stmt->get_result();
+
+$reserved_map = [];
+while ($row = $reserved->fetch_assoc()) {
+    if (isset($row['start_time']) && isset($row['end_time'])) {
+        $location = $row['location'];
+        $start = (int)date('G', strtotime($row['start_time']));
+        $end = (int)date('G', strtotime($row['end_time']));
+        $name = $row['name'];
+        $email = $row['email'];
+
+        for ($h = $start; $h < $end; $h++) {
+            $reserved_map[$location][$h] = [
+                'reserved' => true,
+                'name' => $name,
+                'email' => $email
+            ];
+        }
+    }
+}
 ?>
 
 <div class="page-content">
-    <h2>📊 所有預約紀錄管理</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>📅 選擇日期查看可預約時段</h2>
+    <a href="/~D1285210/reservation/my_reservations.php" class="btn-timetable" style="
+        background-color: #4CAF50;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+      ">查看我的預約</a>
+    </div>
+  <form method="GET" style="margin-bottom: 20px;">
+    <label for="date">借用日期：</label>
+    <input type="date" name="date" value="<?= htmlspecialchars($date) ?>" required>
+    <button type="submit">查詢</button>
+  </form>
 
-    <?php if ($reservations->num_rows > 0): ?>
-        <table>
-            <tr>
-                <th>預約編號</th>
-                <th>地點</th>
-                <th>房間單位</th>
-                <th>時段</th>
-                <th>姓名</th>
-                <th>Email</th>
-                <th>原因</th>
-                <th>教師 ID</th>
-                <th>操作</th>
-            </tr>
-            <?php while ($row = $reservations->fetch_assoc()): ?>
-                <tr>
-                    <td><?= htmlspecialchars($row['reservation_id']) ?></td>
-                    <td><?= htmlspecialchars($row['location']) ?></td>
-                    <td><?= htmlspecialchars($row['room_unit']) ?></td>
-                    <td><?= htmlspecialchars($row['time_slot']) ?></td>
-                    <td><?= htmlspecialchars($row['name']) ?></td>
-                    <td><?= htmlspecialchars($row['email']) ?></td>
-                    <td><?= nl2br(htmlspecialchars($row['reason'])) ?></td>
-                    <td><?= htmlspecialchars($row['teacher_id']) ?></td>
-                    <td>
-                        <a href="edit.php?reservation_id=<?= htmlspecialchars($row['reservation_id']) ?>">編輯</a>
-                        <a href="delete.php?reservation_id=<?= htmlspecialchars($row['reservation_id']) ?>" onclick="return confirm('確定要刪除這筆預約嗎？');">刪除</a>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </table>
-    <?php else: ?>
-        <p>目前尚無任何預約資料。</p>
-    <?php endif; ?>
+  <p>✅：可借用　｜　❌：已借出或不開放（點擊查看預約者）</p>
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr style="background:#ddd;">
+      <th>開始時間＼地點</th>
+      <?php foreach ($hours as $h): ?>
+        <th><?= $h ?>:00</th>
+      <?php endforeach; ?>
+    </tr>
+
+    <?php foreach ($rooms as $room): ?>
+      <tr>
+        <th style="background:#3A80C1; color:white;"><?= $room ?></th>
+        <?php foreach ($hours as $h): ?>
+          <td style="text-align: center;">
+            <?php if (!isset($reserved_map[$room][$h])): ?>
+              <a href="/~D1285210/reservation/form.php?date=<?= htmlspecialchars($date) ?>&room=<?= urlencode($room) ?>&start_time=<?= $h ?>:00"
+                 style="color: green; text-decoration: none;">✅</a>
+            <?php else:
+              $info = $reserved_map[$room][$h];
+              $js_name = htmlspecialchars($info['name'], ENT_QUOTES);
+              $js_email = htmlspecialchars($info['email'], ENT_QUOTES);
+            ?>
+              <span style="color: red; cursor: pointer;"
+                    onclick="alert('此時段已由 <?= $js_name ?> 預約\nEmail：<?= $js_email ?>');"
+                    title="點擊查看預約者資訊">❌</span>
+            <?php endif; ?>
+          </td>
+        <?php endforeach; ?>
+      </tr>
+    <?php endforeach; ?>
+  </table>
 </div>
 
 <?php include '../common/footer.php'; ?>

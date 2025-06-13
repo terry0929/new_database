@@ -48,7 +48,7 @@ if (!isset($_SESSION['teacher_id']) || !preg_match('/^T\d+$/', $_SESSION['teache
         <div class="dashboard-box">
             <h3>📅 空間預約區塊</h3>
             <ul>
-                <li><a href="/~D1285210/reservation/my_reservations.php">📅 空間預約</a></li>
+                <li><a href="/~D1285210/reservation/manage.php">📅 空間預約</a></li>
             </ul>
         </div>
 

@@ -32,7 +32,6 @@ $reservations = $stmt->get_result();
 
 <div class="page-content">
     <h2>📋 我的預約紀錄</h2>
-    <p><a href="/~D1285210/reservation/form.php">➕ 新增預約</a></p>
         <table class="styled-table">
         <tr>
             <th>地點</th>
