@@ -37,16 +37,12 @@ $reservations = $stmt->get_result();
         <tr>
             <th>地點</th>
             <th>時段</th>
-            <th>姓名</th>
-            <th>Email</th>
             <th>操作</th>
         </tr>
         <?php while ($r = $reservations->fetch_assoc()): ?>
         <tr>
             <td><?= htmlspecialchars($r['location']) ?></td>
             <td><?= $r['date'] . ' ' . $r['start_time'] . ' ~ ' . $r['end_time'] ?></td>
-            <td><?= htmlspecialchars($r['name']) ?></td>
-            <td><?= htmlspecialchars($r['email']) ?></td>
             <td>
                 <a href="edit.php?id=<?= $r['reservation_id'] ?>">✏️ 編輯</a> |
                 <a href="delete.php?id=<?= $r['reservation_id'] ?>" onclick="return confirm('確定要取消這筆預約？')">🗑️ 取消</a>

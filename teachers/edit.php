@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include('../common/db.php');
@@ -18,23 +19,38 @@ $stmt = $conn->prepare("SELECT * FROM teacher WHERE teacher_id = ?");
 $stmt->bind_param("s", $teacher_id);
 $stmt->execute();
 $row = $stmt->get_result()->fetch_assoc();
+
+// 多分類處理
+$all_categories = ['系主任', '榮譽特聘講座', '講座教授', '特約講座', '特聘教授', '專任教師', '兼任教師', '行政人員', '退休教師'];
+$selected_categories = explode(',', $row['category'] ?? '');
 ?>
 
 <div class="page-content">
     <h2>✏️ 編輯個人資料</h2>
     <form action="/~D1285210/teachers/update.php" method="post" enctype="multipart/form-data" >
         <input type="hidden" name="teacher_id" value="<?= $row['teacher_id'] ?>">
+
         <label><h3>姓名</h3><br><input type="text" name="name" value="<?= $row['name'] ?>" style="width:80%; padding: 10px; font-size: 16px;"></label><br><br>
         <label><h3>信箱</h3><br><input type="email" name="email" value="<?= $row['email'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>電話</h3><br><input type="text" name="phone" value="<?= $row['phone'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>職稱</h3><br><input type="text" name="title" value="<?= $row['title'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>學歷</h3><br><input type="text" name="education" value="<?= $row['education'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>研究領域</h3><br><input type="text" name="research_field" value="<?= $row['research_field'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+
+        <label><h3>分類（可複選）</h3><br>
+        <?php foreach ($all_categories as $cat): ?>
+            <label style="margin-right: 15px;">
+                <input type="checkbox" name="category[]" value="<?= $cat ?>" <?= in_array($cat, $selected_categories) ? 'checked' : '' ?>>
+                <?= $cat ?>
+            </label>
+        <?php endforeach; ?>
+        </label><br><br>
+
         <label><h3>大頭照</h3><br><input type="file" name="photo"></label><br><br>
         <div style="display: flex; justify-content: center; margin-top: 20px;">
-            <input type="submit" value="更新" style="padding: 10px 20px; width: 60%; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius:8px; cursor: pointer; transition: background-color 0.3s;">
+            <input type="submit" value="更新" style="padding: 10px 20px; font-size: 16px; background-color: #4CAF50; color: white; border: none; border-radius: 8px; cursor: pointer;">
         </div>
     </form>
 </div>
 
-<?php include '../common/footer.php'; ?>
+<?php include('../common/footer.php'); ?>

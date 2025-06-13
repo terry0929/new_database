@@ -1,3 +1,4 @@
+
 <?php
 session_start();
 include('../common/db.php');
@@ -12,10 +13,18 @@ if (!$current_user || !$target_id) {
     exit;
 }
 
+// ✅ 標記所有來自對方的訊息為已讀
+$mark_stmt = $conn->prepare("
+    UPDATE messages
+    SET is_read = 1
+    WHERE sender_id = ? AND receiver_id = ? AND is_read = 0
+");
+$mark_stmt->bind_param("ss", $target_id, $current_user);
+$mark_stmt->execute();
+
 // ⬇️ 查對方姓名（先查老師，再查學生）
 $target_name = null;
 
-// 若是老師 ID（如 T001）
 $stmt = $conn->prepare("SELECT name FROM teacher WHERE teacher_id = ?");
 $stmt->bind_param("s", $target_id);
 $stmt->execute();
@@ -23,21 +32,18 @@ $res = $stmt->get_result();
 if ($res->num_rows > 0) {
     $target_name = $res->fetch_assoc()['name'];
 } else {
-    // 若是學生 ID（如 1）
     $stmt = $conn->prepare("SELECT name FROM student_account WHERE student_id = ?");
     $stmt->bind_param("s", $target_id);
     $stmt->execute();
     $res = $stmt->get_result();
     if ($res->num_rows > 0) {
-        $target_name = $res->fetch_assoc()['name'];  // ✅ student_account 有 name 欄位
+        $target_name = $res->fetch_assoc()['name'];
     }
 }
 
 if (!$target_name) $target_name = $target_id;
 
-// ⬇️ 發送新訊息
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $message = trim($_POST['message'] ?? '');
     if (!empty($message)) {
         $stmt = $conn->prepare("INSERT INTO messages (sender_id, receiver_id, message_text) VALUES (?, ?, ?)");
@@ -46,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// ⬇️ 取得雙方訊息紀錄
 $stmt = $conn->prepare("
     SELECT * FROM messages 
     WHERE (sender_id = ? AND receiver_id = ?) 
@@ -75,7 +80,6 @@ $messages = $stmt->get_result();
     <?php endwhile; ?>
     </div>
 
-
     <form method="post" class="message-form">
         <textarea name="message" rows="3" required placeholder="輸入訊息..."></textarea><br>
         <button type="submit">傳送</button>
@@ -90,7 +94,6 @@ window.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
-
 
 <style>
 .back-link {
@@ -123,7 +126,6 @@ window.addEventListener('DOMContentLoaded', function () {
     margin-left: auto;
     color: #333;
 }
-
 .message.other {
     background: #e3e3ff;
     text-align: left;

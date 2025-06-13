@@ -2,7 +2,15 @@
 include '../common/db.php';
 include '../common/header.php';
 
-$result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_name IS NOT NULL");
+// 從 teacher 表抓所有老師
+$result = $conn->query("SELECT teacher_id, name, category FROM teacher ORDER BY category, name");
+
+// 將老師依分類分群
+$grouped_teachers = [];
+while ($row = $result->fetch_assoc()) {
+    $group = $row['category'] ?: '未分類';  // 若 category 為空，標為未分類
+    $grouped_teachers[$group][] = $row;
+}
 ?>
 
 <div class="page-content">
@@ -11,19 +19,6 @@ $result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_n
   <form action="timetable.php" method="GET" style="max-width: 1000px; margin: auto;">
     <!-- 選擇與輸入同行 -->
     <div style="display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;">
-      <div style="flex: 1.2; min-width: 300px;">
-        <label style="white-space: nowrap;"><h3>🔽 選擇老師：</h3></label><br>
-        <select name="teacher_select" style="width: 100%; padding: 10px; font-size: 16px;">
-          <option value="">請選擇老師</option>
-          <?php
-          $result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_name IS NOT NULL");
-          while ($row = $result->fetch_assoc()):
-          ?>
-            <option value="<?= htmlspecialchars($row['teacher_name']) ?>"><?= htmlspecialchars($row['teacher_name']) ?></option>
-          <?php endwhile; ?>
-        </select>
-      </div>
-
       <div style="flex: 1.2; min-width: 300px;">
         <label style="white-space: nowrap;"><h3>🔍 輸入老師姓名：</h3></label><br>
         <input type="text" name="teacher_search" placeholder="輸入老師姓名"
@@ -41,6 +36,5 @@ $result = $conn->query("SELECT DISTINCT teacher_name FROM course WHERE teacher_n
     </div>
   </form>
 </div>
-
 
 <?php include '../common/footer.php'; ?>
