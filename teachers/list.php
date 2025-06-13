@@ -74,6 +74,7 @@ if ($selected_category && $keyword !== '') {
     <div class="teacher-grid">
       <?php while ($row = $result->fetch_assoc()): ?>
         <div class="teacher-card">
+          <a href="detail.php?id=<?= $row['teacher_id'] ?>">
           <div class="photo">
             <img src="<?= $row['photo'] ? '/~D1285210/uploads/' . $row['photo'] : '/~D1285210/common/default_avatar.png' ?>" alt="照片">
           </div>
@@ -81,8 +82,8 @@ if ($selected_category && $keyword !== '') {
             <h3><?= htmlspecialchars($row['name']) ?></h3>
             <p>職稱：<?= htmlspecialchars($row['title']) ?></p>
             <p>電話：<?= htmlspecialchars($row['phone']) ?></p>
-            <p><a href="detail.php?id=<?= $row['teacher_id'] ?>">🔍 查看</a></p>
           </div>
+          </a>
         </div>
       <?php endwhile; ?>
     </div>
@@ -95,18 +96,32 @@ if ($selected_category && $keyword !== '') {
 .teacher-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 30px;
+  gap: 20px;
   margin-top: 20px;
 }
 .teacher-card {
-  display: flex;
-  width: 420px;
+  flex: 1 1 calc(50% - 20px); /* 每個公告占 50% 寬度，減去間距 */
+  max-width: calc(50% - 20px); /* 强制最大宽度，确保布局一致 */
   background: #fff;
-  border: 1px solid #ccc;
+  padding: 25px 30px;
+  margin: 30px 0;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
 }
+
+.teacher-card:hover{
+  cursor: pointer;
+  background-color: #f0f0f0; /* 鼠標懸停時改變背景色 */
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-card a {
+  text-decoration: none;
+  color: #333; /* 文字顏色 */
+}
+
 .teacher-card .photo img {
   width: 140px;
   height: 180px;
@@ -125,12 +140,6 @@ if ($selected_category && $keyword !== '') {
   margin: 4px 0;
   font-size: 16px;
   color: #555;
-}
-.teacher-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 30px;
-  margin-top: 20px;
 }
 
 </style>

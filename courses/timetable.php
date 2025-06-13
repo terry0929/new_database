@@ -78,7 +78,8 @@ $stmt->close();
 ?>
 
 <div class="page-content">
-  <h2>📚 <?= htmlspecialchars($teacher_name) ?> 的課表</h2><br>
+  <a href="timetable_select.php" style="display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #7f7f7f; color: white; text-decoration: none; border-radius: 5px;">回到課表</a><br><br>
+  <h2>📚 <?= htmlspecialchars($teacher_name) ?> 的課表</h2>
   <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; text-align: center;">
     <thead>
       <tr>
