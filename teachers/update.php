@@ -46,7 +46,7 @@ $stmt->bind_param("sssssssss", $name, $email, $phone, $title, $education, $resea
 
 if ($stmt->execute()) {
     echo "✅ 資料已更新，圖片檔名是：" . $photo_name;
-    echo "<script>window.location.href='list.php';</script>";
+    echo "<script>window.location.href='detail.php?id=" . urlencode($teacher_id) . "';</script>";
 } else {
     echo "❌ 錯誤：" . $stmt->error;
 }

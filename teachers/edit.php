@@ -27,7 +27,7 @@ $selected_categories = explode(',', $row['category'] ?? '');
 
 <div class="page-content">
     <h2>✏️ 編輯個人資料</h2>
-        <form id="editForm" action="/~D1285210/teachers/update.php" method="post" onsubmit="return validateForm()">
+        <form action="update.php" method="post" enctype="multipart/form-data">
         <input type="hidden" name="teacher_id" value="<?= $row['teacher_id'] ?>">
 
         <label><h3>姓名</h3><br><input type="text" name="name" value="<?= $row['name'] ?>" style="width:80%; padding: 10px; font-size: 16px;"></label><br><br>
