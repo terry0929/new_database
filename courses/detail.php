@@ -9,7 +9,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = $_GET['id'];
-$stmt = $conn->prepare("SELECT c.*, t.name AS teacher_name 
+$stmt = $conn->prepare("SELECT c.*, t.name AS teacher_name, t.teacher_id
                         FROM course c
                         JOIN teacher t ON c.teacher_id = t.teacher_id
                         WHERE c.course_id = ?");
