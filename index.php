@@ -28,5 +28,26 @@ $result = $conn->query($sql);
     <?php endwhile; ?>
   </div>
 </div>
+<?php
+$teacher_sql = "SELECT teacher_id, name, photo FROM teacher ORDER BY RAND() LIMIT 4";
+$teacher_result = $conn->query($teacher_sql);
+?>
+<div class="page-content">
+  <h2>👨‍🏫 認識我們的老師</h2>
+  <div class="teacher-grid">
+    
+
+    <?php while ($teacher = $teacher_result->fetch_assoc()): ?>
+      <a href="teachers/detail.php?id=<?= $teacher['teacher_id'] ?>" class="teacher-card">
+        <img src="/~D1285210/uploads/<?= htmlspecialchars($teacher['photo'] ?? 'default_avatar.png') ?>" alt="教師照片">
+        <div class="teacher-name"><?= htmlspecialchars($teacher['name']) ?></div>
+      </a>
+    <?php endwhile; ?>
+    </div>
+    <div style="text-align: right; margin-top: 10px;">
+            <a href="teachers/list.php" class="btn-more">👉 顯示更多老師</a>
+    </div>
+</div>
+
 
 <?php include 'common/footer.php'; ?>
