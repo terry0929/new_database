@@ -59,7 +59,7 @@ $messages = $stmt->get_result();
 ?>
 
 <div class="page-content">
-    <a href="index.php" class="back-link">← 回到對話列表</a>
+    <a href="index.php" class="back-link" style="display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #7f7f7f; color: white; text-decoration: none; border-radius: 5px;">回到對話列表</a>
     <h2>💬 與 <?= htmlspecialchars($target_name) ?> 的對話</h2>
 
     <div class="chat-box">
@@ -131,6 +131,12 @@ window.addEventListener('DOMContentLoaded', function () {
     color: #333;
 }
 
+.message-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* 將按鈕置右 */
+}
+
 .message-form textarea {
     width: 100%;
     font-size: 14px;
@@ -144,6 +150,10 @@ window.addEventListener('DOMContentLoaded', function () {
     color: white;
     border: none;
     border-radius: 4px;
+    cursor: pointer;
+}
+.message-form button:hover {
+    background: #45a049; /* 按鈕 hover 效果 */
 }
 </style>
 
