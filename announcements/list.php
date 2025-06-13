@@ -54,7 +54,7 @@ if ($keyword !== '') {
 <div class="page-content">
 <div style="display: flex;">
   <!-- 側邊分類欄 -->
-  <aside style="width: 220px; padding: 20px; border-right: 1px solid #ccc; background-color: #f9f9f9;">
+  <aside style="width: 220px; padding: 20px; background-color: #f9f9f9;">
     <h3>📁 分類</h3><br>
     <ul style="list-style-type: none; padding-left: 0;">
       <?php foreach ($categories as $cat): ?>
@@ -70,7 +70,6 @@ if ($keyword !== '') {
   <!-- 公告清單 -->
   <main style="flex: 1; padding: 20px;">
     <h2>📢 公告清單<?= $_GET['category'] ? " - " . htmlspecialchars($_GET['category']) : "" ?></h2>
-
     <form method="get" action="" class="search-form" style="margin-bottom: 20px;">
         🔍 關鍵字搜尋（標題、分類、內容）：<br><br>
         <input type="text" name="q" value="<?= htmlspecialchars($keyword) ?>" style="padding: 5px; width: 250px;">
@@ -83,17 +82,18 @@ if ($keyword !== '') {
     <?php if ($result->num_rows === 0): ?>
         <p style="color: red;">❗ 沒有符合條件的公告。</p>
     <?php else: ?>
-        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <div class="announcement-container">
             <?php while ($row = $result->fetch_assoc()): ?>
-                <div style="border: 1px solid #ccc; border-radius: 8px; padding: 16px; width: 300px; background: #fdfdfd; box-shadow: 2px 2px 5px rgba(0,0,0,0.05);">
-                    <?php if (!empty($row['image'])): ?>
-                        <img src="/~D1285210/uploads_ann/<?= htmlspecialchars($row['image']) ?>" alt="公告圖片" style="width: 100%; border-radius: 6px; margin-bottom: 10px;">
-                    <?php endif; ?>
-                    <h3 style="margin: 0 0 8px;"><?= htmlspecialchars($row['title']) ?></h3>
-                    <p style="margin: 4px 0;"><strong>分類：</strong><?= htmlspecialchars($row['category']) ?></p>
-                    <p style="margin: 4px 0;"><strong>日期：</strong><?= htmlspecialchars($row['post_date']) ?></p>
-                    <p style="margin: 4px 0;"><strong>發佈者：</strong><?= htmlspecialchars($row['teacher_name']) ?></p>
-                    <a href="detail.php?id=<?= $row['announcement_id'] ?>" style="text-decoration: none; color: #007bff;">🔍 查看詳細</a>
+                <div class="announcement">
+                    <a href="detail.php?id=<?= $row['announcement_id'] ?>">
+                        <?php if (!empty($row['image'])): ?>
+                            <img src="/~D1285210/uploads_ann/<?= htmlspecialchars($row['image']) ?>" alt="公告圖片" class="announcement-photo">
+                        <?php endif; ?>
+                        <h3 style="margin: 0 0 8px;"><?= htmlspecialchars($row['title']) ?></h3>
+                        <p style="margin: 4px 0;"><strong>分類：</strong><?= htmlspecialchars($row['category']) ?></p>
+                        <p style="margin: 4px 0;"><strong>日期：</strong><?= htmlspecialchars($row['post_date']) ?></p>
+                        <p style="margin: 4px 0;"><strong>發佈者：</strong><?= htmlspecialchars($row['teacher_name']) ?></p>
+                    </a>
                 </div>
             <?php endwhile; ?>
         </div>
@@ -103,3 +103,40 @@ if ($keyword !== '') {
 </div>
 
 <?php include '../common/footer.php'; ?>
+
+<style>
+    .announcement-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    .announcement {
+        flex: 1 1 calc(50% - 20px); /* 每個公告占 50% 寬度，減去間距 */
+        max-width: calc(50% - 20px); /* 强制最大宽度，确保布局一致 */
+        background: #fff;
+        padding: 25px 30px;
+        margin: 30px 0;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        transition: all 0.2s ease;
+    }
+
+    .announcement:hover {
+        cursor: pointer;
+        background-color: #f0f0f0; /* 鼠標懸停時改變背景色 */
+        transform: translateY(-4px);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    .announcement a {
+        text-decoration: none;
+        color: #333; /* 文字顏色 */
+    }
+    .announcement-photo {
+        width: 100%; /* 限制圖片寬度為公告方塊的寬度 */
+        height: 200px; /* 限制高度 */
+        object-fit: cover; /* 確保圖片以正方形顯示，裁剪超出部分 */
+        border-radius: 8px; /* 圓角效果 */
+        border: 2px solid #ccc; /* 增加邊框 */
+    }
+</style>

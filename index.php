@@ -21,11 +21,16 @@ $result = $conn->query($sql);
   <h2>📢 最新公告</h2>
   <div class="announcement-grid">
     <?php while ($row = $result->fetch_assoc()): ?>
-      <a href="announcements/detail.php?id=<?= $row['announcement_id'] ?>" class="announcement-card">
-        <img src="/~D1285210/uploads_ann/<?= htmlspecialchars($row['image']) ?>" alt="公告圖片">
-        <div class="announcement-title"><?= htmlspecialchars($row['title']) ?></div>
-      </a>
+      <div class="announcement-card">
+        <a href="announcements/detail.php?id=<?= $row['announcement_id'] ?>">
+          <img src="/~D1285210/uploads_ann/<?= htmlspecialchars($row['image']) ?>" alt="公告圖片">
+          <div class="announcement-title"><?= htmlspecialchars($row['title']) ?></div>
+        </a>
+      </div>
     <?php endwhile; ?>
+  </div>
+  <div style="text-align: right; margin-top: 10px;">
+      <br><a href="announcements/list.php" class="btn-more">👉 顯示所有公告</a>
   </div>
 </div>
 <?php
@@ -35,17 +40,17 @@ $teacher_result = $conn->query($teacher_sql);
 <div class="page-content">
   <h2>👨‍🏫 認識我們的老師</h2>
   <div class="teacher-grid">
-    
-
     <?php while ($teacher = $teacher_result->fetch_assoc()): ?>
-      <a href="teachers/detail.php?id=<?= $teacher['teacher_id'] ?>" class="teacher-card">
+      <a href="teachers/detail.php?id=<?= $teacher['teacher_id'] ?>">
+      <div class="teacher-card">
         <img src="/~D1285210/uploads/<?= htmlspecialchars($teacher['photo'] ?? 'default_avatar.png') ?>" alt="教師照片">
         <div class="teacher-name"><?= htmlspecialchars($teacher['name']) ?></div>
+      </div>
       </a>
     <?php endwhile; ?>
     </div>
     <div style="text-align: right; margin-top: 10px;">
-            <a href="teachers/list.php" class="btn-more">👉 顯示更多老師</a>
+        <br><a href="teachers/list.php" class="btn-more">👉 顯示更多老師</a>
     </div>
 </div>
 

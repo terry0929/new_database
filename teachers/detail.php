@@ -212,9 +212,11 @@ $photoPath = $teacher['photo']
   }
 
   .profile-photo img {
-    border-radius: 8px;
-    border: 2px solid #ccc;
-    width: 400px; /* 照片放大 */
+    width: 400px; /* 限制寬度 */
+    height: 400px; /* 限制高度 */
+    object-fit: cover; /* 確保圖片以正方形顯示，裁剪超出部分 */
+    border-radius: 8px; /* 圓角效果 */
+    border: 2px solid #ccc; /* 增加邊框 */
   }
 
   .profile-info {
