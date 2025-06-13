@@ -29,25 +29,31 @@ $today = date('Y-m-d');
     <form action="/~D1285210/announcements/save.php" method="post" enctype="multipart/form-data">
         <label>公告圖片：</label>
          <label><br><input type="file" name="image" accept="image/*" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+         <div class="form-group">
         <label><h3>標題:</h3><br>
             <input type="text" name="title" style="width:80%; padding:10px; font-size: 16px;">
-        </label><br><br>
+        </label>
+        </div><br><br>
 
-        <label><h3>分類（可複選）:</h3><br>
-            <?php foreach ($all_categories as $cat): ?>
-                <label style="margin-right: 15px;">
-                    <input type="checkbox" name="category[]" value="<?= $cat ?>"> <?= $cat ?>
-                </label>
-            <?php endforeach; ?>
-        </label><br><br>
+        <label><h3>分類（可複選）:</h3></label>
+<div class="category-section">
+  <?php foreach ($all_categories as $cat): ?>
+    <label style="display:inline-block; margin-right: 10px;">
+      <input type="checkbox" name="category[]" value="<?= $cat ?>">
+      <?= $cat ?>
+    </label>
+  <?php endforeach; ?>
+</div><br><br>
 
         <label><h3>發佈日期:</h3><br>
             <input type="date" name="post_date" value="<?= $today ?>" style="width:80%; padding:10px; font-size: 16px;">
         </label><br><br>
 
+        <div class="form-group">
         <label><h3>內容:</h3><br>
             <textarea name="content" style="width:80%; padding:10px; font-size: 16px;"></textarea>
-        </label><br><br>
+        </label>
+        </div><br><br>
 
         <input type="hidden" name="user_id" value="<?= htmlspecialchars($_SESSION['user_id']) ?>">
         <input type="hidden" name="teacher_id" value="<?= htmlspecialchars($teacher_id) ?>">
@@ -57,5 +63,58 @@ $today = date('Y-m-d');
         </div>
     </form>
 </div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function (e) {
+    let isValid = true;
+
+    const title = document.querySelector('input[name="title"]');
+    const content = document.querySelector('textarea[name="content"]');
+    const date = document.querySelector('input[name="post_date"]');
+    const categories = document.querySelectorAll('input[name="category[]"]');
+    const categorySection = document.querySelector('.category-section');
+
+    // 移除所有舊的錯誤訊息
+    document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+    // 標題驗證
+    if (title.value.trim() === '') {
+        showError(title.parentNode, '⚠️ 請填寫標題');
+        isValid = false;
+    }
+
+    // 內容驗證
+    if (content.value.trim() === '') {
+        showError(content.parentNode, '⚠️ 請填寫內容');
+        isValid = false;
+    }
+
+    // 日期驗證
+    if (date.value.trim() === '') {
+        showError(date.parentNode, '⚠️ 請選擇日期');
+        isValid = false;
+    }
+
+    // 至少選擇一個分類
+    if (![...categories].some(cat => cat.checked)) {
+        showError(categorySection, '⚠️ 請至少選擇一個分類');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        e.preventDefault();
+    }
+
+    function showError(target, msg) {
+        const err = document.createElement('div');
+        err.className = 'error-msg';
+        err.style.color = 'red';
+        err.style.marginTop = '4px';
+        err.textContent = msg;
+        target.appendChild(err);
+    }
+});
+</script>
+
 
 <?php include '../common/footer.php'; ?>

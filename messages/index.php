@@ -64,7 +64,7 @@ while ($row = $all_msgs->fetch_assoc()) {
 ?>
 
 <div class="page-content">
-    <h2>📨 我的對話紀錄</h2>
+    <h2>📨 我的訊息</h2>
 
     <form method="get" style="margin-bottom: 20px;">
         <input type="text" name="search" placeholder="🔍 搜尋老師名稱..." value="<?= htmlspecialchars($search) ?>" style="padding: 8px; width: 250px;">

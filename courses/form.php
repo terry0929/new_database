@@ -89,4 +89,50 @@ $course = [
     </form>
 </div>
 
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    let isValid = true;
+
+    const title = document.querySelector('input[name="name"]');
+    const location = document.querySelector('input[name="location"]');
+    const semester = document.querySelector('input[name="semester"]');
+    const credits = document.querySelector('input[name="credits"]');
+    const syllabus = document.querySelector('textarea[name="syllabus"]');
+
+    // 清除舊錯誤訊息
+    document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+    function showError(input, msg) {
+        const err = document.createElement('div');
+        err.className = 'error-msg';
+        err.style.color = 'red';
+        err.textContent = msg;
+        input.parentNode.appendChild(err);
+    }
+
+    if (!title.value.trim()) {
+        showError(title, '⚠️ 請填寫課程名稱');
+        isValid = false;
+    }
+    if (!location.value.trim()) {
+        showError(location, '⚠️ 請填寫地點');
+        isValid = false;
+    }
+    if (!semester.value.trim()) {
+        showError(semester, '⚠️ 請填寫學期');
+        isValid = false;
+    }
+    if (!credits.value.trim() || isNaN(credits.value) || Number(credits.value) <= 0) {
+        showError(credits, '⚠️ 學分數需為正數');
+        isValid = false;
+    }
+    if (!syllabus.value.trim()) {
+        showError(syllabus, '⚠️ 請填寫課程大綱');
+        isValid = false;
+    }
+
+    if (!isValid) e.preventDefault();
+});
+</script>
+
 <?php include '../common/footer.php'; ?>

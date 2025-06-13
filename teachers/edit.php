@@ -27,12 +27,17 @@ $selected_categories = explode(',', $row['category'] ?? '');
 
 <div class="page-content">
     <h2>✏️ 編輯個人資料</h2>
-    <form action="/~D1285210/teachers/update.php" method="post" enctype="multipart/form-data" >
+        <form id="editForm" action="/~D1285210/teachers/update.php" method="post" onsubmit="return validateForm()">
         <input type="hidden" name="teacher_id" value="<?= $row['teacher_id'] ?>">
 
         <label><h3>姓名</h3><br><input type="text" name="name" value="<?= $row['name'] ?>" style="width:80%; padding: 10px; font-size: 16px;"></label><br><br>
-        <label><h3>信箱</h3><br><input type="email" name="email" value="<?= $row['email'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
-        <label><h3>電話</h3><br><input type="text" name="phone" value="<?= $row['phone'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
+        <label><h3>信箱</h3><br><input type="text" name="email" id="email" value="<?= $row['email'] ?>" required style="width:80%; padding:10px;font-size: 16px;">
+        <span id="emailError" style="color:red; display:none;">⚠ 請輸入有效的 Email</span>
+        </label><br><br>
+        <label><h3>電話</h3><br>
+        <input type="text" name="phone" id="phone" value="<?= $row['phone'] ?>" required style="width:80%; padding:10px;font-size: 16px;">
+        <span id="phoneError" style="color:red; display:none;">⚠ 電話需為 10 位數字</span>
+        </label><br><br>
         <label><h3>職稱</h3><br><input type="text" name="title" value="<?= $row['title'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>學歷</h3><br><input type="text" name="education" value="<?= $row['education'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
         <label><h3>研究領域</h3><br><input type="text" name="research_field" value="<?= $row['research_field'] ?>" style="width:80%; padding:10px; font-size: 16px;"></label><br><br>
@@ -52,5 +57,34 @@ $selected_categories = explode(',', $row['category'] ?? '');
         </div>
     </form>
 </div>
+
+<script>
+function validateForm() {
+    let valid = true;
+
+    // Email 驗證
+    const email = document.getElementById('email').value;
+    const emailError = document.getElementById('emailError');
+    if (!email.includes('@') || !email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
+        emailError.style.display = 'inline';
+        valid = false;
+    } else {
+        emailError.style.display = 'none';
+    }
+
+    // 電話驗證
+    const phone = document.getElementById('phone').value;
+    const phoneError = document.getElementById('phoneError');
+    if (!/^\d{10}$/.test(phone)) {
+        phoneError.style.display = 'inline';
+        valid = false;
+    } else {
+        phoneError.style.display = 'none';
+    }
+
+    return valid; // 有錯誤會阻止表單送出
+}
+</script>
+
 
 <?php include('../common/footer.php'); ?>

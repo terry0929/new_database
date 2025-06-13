@@ -25,8 +25,6 @@ if ($result->num_rows === 0) {
 ?>
 
 <div class="page-content">
-    <a href="list.php" style="display: inline-block; margin-top: 20px; padding: 10px 15px; background-color: #7f7f7f; color: white; text-decoration: none; border-radius: 5px;">回到對話列表</a><br><br>
-    <h2>📢 公告詳情</h2>
     <table border="1" cellpadding="8" cellspacing="0">
             <?php if ($photoPath): ?>
                 <img src="<?= $photoPath ?>" alt="公告圖片">

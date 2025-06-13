@@ -62,7 +62,7 @@ $stmt = $conn->prepare("INSERT INTO reservation (location, date, start_time, end
 VALUES (?, ?, ?, ?, ?, ?, ?)");
 $stmt->bind_param("sssssss", $_POST['location'], $date, $start_time, $end_time, $teacher_id, $name, $email);
 if ($stmt->execute()) {
-    header("Location: /~D1285210/reservation/manage.php");
+    header("Location: /~D1285210/reservation/my_reservations.php");
     exit;
 } else {
     echo "❌ 預約失敗: " . $stmt->error;

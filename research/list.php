@@ -74,7 +74,7 @@ $result5 = $result5->get_result();
 <div class="page-content">
     <h2>🧪 我的研究成果</h2>
     <!-- <p><a href="/~D1285210/research/form.php">➕ 新增成果</a></p> -->
-    <p><a href="/~D1285210/research/choose_type.php">➕ 新增成果</a></p>
+    <p><a href="/~D1285210/research/choose_type.php">➕ 新增成果</a></p><br>
 
     <h3>期刊論文</h3>
     <table class="styled-table">

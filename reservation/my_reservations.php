@@ -24,7 +24,7 @@ if (!$teacher_id) {
 }
 
 // 查詢這個老師的預約紀錄
-$stmt = $conn->prepare("SELECT * FROM reservation WHERE teacher_id = ? ORDER BY date ASC, start_time ASC");
+$stmt = $conn->prepare("SELECT * FROM reservation WHERE teacher_id = ? ORDER BY date DESC, start_time DESC");
 $stmt->bind_param("s", $teacher_id);
 $stmt->execute();
 $reservations = $stmt->get_result();

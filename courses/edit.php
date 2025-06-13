@@ -50,28 +50,29 @@ if (isset($_SESSION['user_id'])) {
         </label><br><br>
 
         <label><h3>上課時間:</h3><br>
-            <select name="day" style="width:80%; padding:10px; font-size: 16px;" required>
-                <?php
-                $days = ['一', '二', '三', '四', '五' , '六', '日'];
-                foreach ($days as $d) {
-                    $selected = ($course['day'] === $d) ? 'selected' : '';
-                    echo "<option value='$d' $selected>星期$d</option>";
-                }
-                ?>
-            </select><br><br>
-            第
-            <select name="start_time" style="width:35.2%; padding:10px; font-size: 16px;" required>
-                <?php for ($i = 1; $i <= 14; $i++): ?>
-                    <option value="<?= $i ?>" <?= ($course['start_time'] == $i ? 'selected' : '') ?>><?= $i ?></option>
-                <?php endfor; ?>
-            </select>
-            節 到 第
-            <select name="end_time" style="width:35.2%; padding:10px; font-size: 16px;" required>
-                <?php for ($i = 1; $i <= 14; $i++): ?>
-                    <option value="<?= $i ?>" <?= ($course['end_time'] == $i ? 'selected' : '') ?>><?= $i ?></option>
-                <?php endfor; ?>
-            </select>
-            節
+        <select name="day" style="width:80%; padding:10px; font-size: 16px;" required>
+            <?php
+            $days = ['一', '二', '三', '四', '五' , '六', '日'];
+            foreach ($days as $d) {
+                $selected = ($course['day'] === $d) ? 'selected' : '';
+                echo "<option value='$d' $selected>星期$d</option>";
+            }
+            ?>
+        </select><br><br>
+
+        第
+        <select name="start_time" style="width:35.2%; padding:10px; font-size: 16px;" required>
+            <?php for ($i = 1; $i <= 14; $i++): ?>
+                <option value="<?= $i ?>" <?= ($course['start_time'] == $i ? 'selected' : '') ?>><?= $i ?></option>
+            <?php endfor; ?>
+        </select>
+        節 到 第
+        <select name="end_time" style="width:35.2%; padding:10px; font-size: 16px;" required>
+            <?php for ($i = 1; $i <= 14; $i++): ?>
+                <option value="<?= $i ?>" <?= ($course['end_time'] == $i ? 'selected' : '') ?>><?= $i ?></option>
+            <?php endfor; ?>
+        </select>
+        節
         </label><br><br>
 
         <label><h3>學期:</h3><br>
@@ -91,5 +92,52 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </form>
 </div>
+
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    let isValid = true;
+
+    const title = document.querySelector('input[name="name"]');
+    const location = document.querySelector('input[name="location"]');
+    const semester = document.querySelector('input[name="semester"]');
+    const credits = document.querySelector('input[name="credits"]');
+    const syllabus = document.querySelector('textarea[name="syllabus"]');
+
+    // 清除舊錯誤訊息
+    document.querySelectorAll('.error-msg').forEach(el => el.remove());
+
+    function showError(input, msg) {
+        const err = document.createElement('div');
+        err.className = 'error-msg';
+        err.style.color = 'red';
+        err.textContent = msg;
+        input.parentNode.appendChild(err);
+    }
+
+    if (!title.value.trim()) {
+        showError(title, '⚠️ 請填寫課程名稱');
+        isValid = false;
+    }
+    if (!location.value.trim()) {
+        showError(location, '⚠️ 請填寫地點');
+        isValid = false;
+    }
+    if (!semester.value.trim()) {
+        showError(semester, '⚠️ 請填寫學期');
+        isValid = false;
+    }
+    if (!credits.value.trim() || isNaN(credits.value) || Number(credits.value) <= 0) {
+        showError(credits, '⚠️ 學分數需為正數');
+        isValid = false;
+    }
+    if (!syllabus.value.trim()) {
+        showError(syllabus, '⚠️ 請填寫課程大綱');
+        isValid = false;
+    }
+
+    if (!isValid) e.preventDefault();
+});
+</script>
+
 
 <?php include '../common/footer.php'; ?>

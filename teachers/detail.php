@@ -47,7 +47,8 @@ $photoPath = $teacher['photo']
             <li><strong>教師編號：</strong><?= htmlspecialchars($teacher['teacher_id']) ?></li>
             <li><strong>信箱：</strong><?= htmlspecialchars($teacher['email']) ?></li>
             <li><strong>分機電話：</strong><?= htmlspecialchars($teacher['phone']) ?></li>
-            <li><a href="/~D1285210/courses/timetable.php?teacher_search=<?= htmlspecialchars($teacher['name']) ?>">查看課表時間</a></li>
+            <li><a href="/~D1285210/courses/timetable.php?teacher_search=<?= htmlspecialchars($teacher['name']) ?>">🗓️查看課表時間</a></li>
+            <li><a href="/~D1285210/messages/chat.php?target_id=<?= htmlspecialchars($teacher['teacher_id']) ?>">📨聯絡老師</a></li>
         </ul>
     </div>
     <br></br>

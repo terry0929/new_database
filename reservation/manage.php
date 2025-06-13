@@ -66,11 +66,12 @@ while ($row = $reserved->fetch_assoc()) {
     </div>
   <form method="GET" style="margin-bottom: 20px;">
     <label for="date">借用日期：</label>
-    <input type="date" name="date" value="<?= htmlspecialchars($date) ?>" required>
+    <input type="date" name="date" value="<?= htmlspecialchars($date) ?>" min="<?= date('Y-m-d') ?>" required>
+
     <button type="submit">查詢</button>
   </form>
 
-  <p>✅：可借用　｜　❌：已借出或不開放（點擊查看預約者）</p>
+  <p>✅：可借用 (點擊預約) 　｜　❌：已借出或不開放（點擊查看預約者）</p>
 
   <table border="1" cellpadding="6" cellspacing="0">
     <tr style="background:#ddd;">
